@@ -7,13 +7,13 @@ import bcrypt from "bcryptjs";
 import { LoginSchema } from "@/lib/schemas";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as any,
   session: { strategy: "jwt" },
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
-      allowDangerousEmailAccountLinking: true, // Permite vincular Google a conta existente
+      allowDangerousEmailAccountLinking: true, 
     }),
     Credentials({
       async authorize(credentials) {
@@ -38,7 +38,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    // Estende a sessão com o ID e Role do usuário
+    // 1. Passa os dados do Token para a Sessão (Front-end)
     async session({ session, token }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
@@ -47,8 +47,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // @ts-ignore
         session.user.role = token.role;
       }
+      // ADICIONADO: Passa o whatsapp para a sessão se existir
+      if (token.whatsapp && session.user) {
+         // @ts-ignore
+         session.user.whatsapp = token.whatsapp;
+      }
       return session;
     },
+    // 2. Passa os dados do Banco para o Token (JWT)
     async jwt({ token }) {
       if (!token.sub) return token;
 
@@ -60,11 +66,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       // @ts-ignore
       token.role = existingUser.role;
+      // ADICIONADO: Salva o whatsapp no token
+      // @ts-ignore
+      token.whatsapp = existingUser.whatsapp;
+      
       return token;
     },
   },
   events: {
-    // Lógica para setar ADMIN automaticamente na criação do usuário
     async createUser({ user }) {
       if (user.email === process.env.ADMIN_EMAIL) {
         await prisma.user.update({

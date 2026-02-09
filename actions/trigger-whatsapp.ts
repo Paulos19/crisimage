@@ -1,11 +1,28 @@
 "use server";
 
 import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma"; // Importação necessária
 
 export async function sendWhatsappNotification(link: string, title: string) {
   const session = await auth();
   
-  if (!session?.user?.id || !session.user.whatsapp) {
+  // 1. Verificação básica de autenticação (apenas ID)
+  if (!session?.user?.id) {
+    return { error: "Não autorizado." };
+  }
+
+  // 2. BUSCA DIRETA NO BANCO (Fonte da Verdade)
+  // Isso resolve o problema de "Sessão desatualizada" ou "Campo faltando na sessão"
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { 
+      whatsapp: true, 
+      name: true 
+    }
+  });
+
+  // 3. Validação do dado fresco
+  if (!user || !user.whatsapp) {
     return { error: "Usuário sem WhatsApp cadastrado." };
   }
 
@@ -19,8 +36,8 @@ export async function sendWhatsappNotification(link: string, title: string) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         userId: session.user.id,
-        name: session.user.name,
-        phone: session.user.whatsapp,
+        name: user.name || "Usuário", // Usa o nome do banco
+        phone: user.whatsapp,          // Usa o whats do banco
         downloadLink: link,
         projectTitle: title,
         timestamp: new Date().toISOString()
