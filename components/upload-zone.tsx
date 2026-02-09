@@ -5,21 +5,23 @@ import { useDropzone } from "react-dropzone";
 import JSZip from "jszip";
 import { upload } from "@vercel/blob/client";
 import { createUploadSession } from "@/actions/create-session";
-import { useRouter } from "next/navigation";
+import { QRCodeSVG } from "qrcode.react";
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Card } from "@/components/ui/card";
-import { FileIcon, Loader2, UploadCloud, X } from "lucide-react";
+import { FileIcon, Loader2, UploadCloud, X, Copy, Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function UploadZone() {
-  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState<"IDLE" | "ZIPPING" | "UPLOADING" | "SAVING">("IDLE");
   const [progress, setProgress] = useState(0);
+  
+  // Estado para tela de sucesso
+  const [successData, setSuccessData] = useState<{ slug: string; link: string } | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // Limite de 50 imagens
@@ -38,6 +40,14 @@ export function UploadZone() {
 
   const removeFile = (index: number) => {
     setFiles(files.filter((_, i) => i !== index));
+  };
+
+  const copyToClipboard = () => {
+    if (successData) {
+      navigator.clipboard.writeText(successData.link);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const handleProcess = async () => {
@@ -67,7 +77,7 @@ export function UploadZone() {
 
       // 2. Uploading (Vercel Blob)
       setStatus("UPLOADING");
-      setProgress(0); // Reinicia progresso para o upload
+      setProgress(0);
 
       const filename = `${title.replace(/\s+/g, '-')}-${Date.now()}.zip`;
       
@@ -84,7 +94,15 @@ export function UploadZone() {
       const result = await createUploadSession(newBlob.url, title);
 
       if (result.success) {
-        router.push(`/download/${result.success}`); // Redireciona para a página pública
+        // Gera o link completo baseando-se na origem atual
+        const link = `${window.location.origin}/download/${result.success}`;
+        
+        setSuccessData({ slug: result.success!, link });
+        
+        // Limpa o formulário
+        setStatus("IDLE");
+        setFiles([]);
+        setTitle("");
       } else {
         alert("Erro ao salvar sessão: " + result.error);
         setStatus("IDLE");
@@ -97,6 +115,36 @@ export function UploadZone() {
     }
   };
 
+  // --- Renderização da Tela de Sucesso ---
+  if (successData) {
+    return (
+        <div className="flex flex-col items-center space-y-6 text-center animate-in fade-in slide-in-from-bottom-4 py-4">
+            <div className="space-y-2">
+                <h3 className="text-2xl font-bold text-green-600">Arquivo Pronto!</h3>
+                <p className="text-muted-foreground">Escaneie o QR Code ou copie o link para compartilhar.</p>
+            </div>
+
+            <div className="p-4 bg-white rounded-xl shadow-sm border border-neutral-200">
+                <QRCodeSVG value={successData.link} size={180} />
+            </div>
+
+            <div className="flex w-full max-w-sm items-center space-x-2">
+                <Input value={successData.link} readOnly className="text-center bg-neutral-50" />
+                <Button size="icon" variant="outline" onClick={copyToClipboard}>
+                    {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+                </Button>
+            </div>
+
+            <div className="pt-4">
+                <Button variant="default" onClick={() => setSuccessData(null)}>
+                    Criar novo upload
+                </Button>
+            </div>
+        </div>
+    );
+  }
+
+  // --- Renderização do Formulário de Upload ---
   return (
     <div className="space-y-6">
         {/* Título do Upload */}
