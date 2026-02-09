@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock } from "lucide-react";
 import Link from "next/link";
-import { DownloadActions } from "@/components/download-actions"; // Criaremos abaixo
+import { DownloadActions } from "@/components/download-actions";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -18,11 +18,11 @@ export default async function DownloadPage({ params }: PageProps) {
   const session = await auth();
 
   // 1. Gate de Segurança: Login Obrigatório
-  if (!session?.user) {
+  if (!session?.user?.id) {
     redirect(`/login?callbackUrl=/download/${slug}`);
   }
 
-  // 2. Busca Dados
+  // 2. Busca Dados da Sessão de Upload
   const uploadSession = await prisma.uploadSession.findUnique({
     where: { slug },
   });
@@ -48,23 +48,30 @@ export default async function DownloadPage({ params }: PageProps) {
     );
   }
 
-  // 4. Verificação do WhatsApp (Lógica do Modal)
-  const hasWhatsapp = !!session.user.whatsapp;
+  // 4. Verificação CRÍTICA do WhatsApp
+  // Não confiamos apenas na sessão aqui, buscamos o user atualizado no banco
+  // para garantir que o Modal suma imediatamente após o update.
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { whatsapp: true } // Otimizado, pega só o campo necessário
+  });
+
+  const hasWhatsapp = !!user?.whatsapp;
 
   return (
     <>
+      {/* Renderiza o Modal se NÃO tiver whatsapp */}
       <WhatsAppModal isOpen={!hasWhatsapp} />
       
-      {/* Só renderiza o conteúdo se tiver WhatsApp, visualmente fica bloqueado pelo modal, mas protegemos aqui também se quiser */}
-      <div className={!hasWhatsapp ? "blur-sm pointer-events-none" : ""}>
+      {/* Aplica blur e desabilita cliques se o modal estiver ativo */}
+      <div className={!hasWhatsapp ? "blur-sm pointer-events-none select-none h-screen overflow-hidden" : ""}>
         <DownloadViewer 
             zipUrl={uploadSession.zipUrl} 
             title={uploadSession.title}
             expiresAt={uploadSession.expiresAt}
         />
         
-        {/* Componente Client-Side para os botões de ação */}
-        <div className="mt-8 max-w-4xl mx-auto flex justify-center">
+        <div className="mt-8 max-w-4xl mx-auto flex justify-center pb-10">
             <DownloadActions 
                 link={`${process.env.NEXTAUTH_URL}/download/${slug}`} 
                 title={uploadSession.title || "Imagens"} 

@@ -8,27 +8,40 @@ import { Label } from "@/components/ui/label";
 import { updateUserPhone } from "@/actions/update-phone";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+// REMOVIDO: import { useSession } from "next-auth/react"; 
 
 export function WhatsAppModal({ isOpen }: { isOpen: boolean }) {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  // REMOVIDO: const { update } = useSession();
 
   const handleSubmit = async () => {
+    if (phone.length < 10) return;
+    
     setLoading(true);
+    
+    // 1. Atualiza no Banco via Server Action
     const res = await updateUserPhone(phone);
+    
     if (res.success) {
-      router.refresh(); // Recarrega para atualizar a sessão do lado do servidor/cliente
-      // O modal fechará automaticamente pois o componente pai vai re-renderizar com o dado atualizado
+      // 2. Apenas recarrega a rota. 
+      // Como a Page (Server Component) busca direto do Prisma, ela vai pegar o dado novo.
+      router.refresh(); 
+      
+      // O loading continua true visualmente até a página recarregar e o modal sumir.
     } else {
       alert(res.error);
       setLoading(false);
     }
   };
 
+  // Se não estiver aberto, nem renderiza
+  if (!isOpen) return null;
+
   return (
-    <Dialog open={isOpen}>
-      <DialogContent className="sm:max-w-[425px]" onInteractOutside={(e) => e.preventDefault()}>
+    <Dialog open={isOpen} onOpenChange={() => {}}>
+      <DialogContent className="sm:max-w-[425px] [&>button]:hidden" onInteractOutside={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Complete seu cadastro</DialogTitle>
           <DialogDescription>
@@ -43,12 +56,14 @@ export function WhatsAppModal({ isOpen }: { isOpen: boolean }) {
               placeholder="11999999999"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              disabled={loading}
             />
           </div>
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={loading || phone.length < 10}>
-            {loading ? <Loader2 className="animate-spin h-4 w-4" /> : "Salvar e Continuar"}
+            {loading ? <Loader2 className="animate-spin h-4 w-4 mr-2" /> : null}
+            {loading ? "Salvando..." : "Salvar e Continuar"}
           </Button>
         </DialogFooter>
       </DialogContent>
