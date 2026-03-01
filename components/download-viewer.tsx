@@ -95,55 +95,58 @@ export function DownloadViewer({ slug, zipUrl, previewZipUrl, title, expiresAt, 
   };
 
   return (
-    <Card className="w-full shadow-xl">
-      <CardHeader className="text-center border-b bg-neutral-50/50 pb-8 pt-6">
-        <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4 relative">
+    <Card className="w-full shadow-2xl border-none bg-white/90 dark:bg-card/90 backdrop-blur-md rounded-3xl overflow-hidden mt-8">
+      <CardHeader className="text-center border-b border-border/40 bg-neutral-50/50 dark:bg-neutral-900/30 pb-8 pt-6">
+        <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary/20 to-indigo-500/20 rounded-2xl flex items-center justify-center mb-4 relative shadow-sm">
           <FileArchive className="h-8 w-8 text-primary" />
           {isProtected && keyState !== "SUCCESS" && (
-            <div className="absolute -bottom-2 -right-2 bg-orange-100 p-1.5 rounded-full border border-orange-200">
-              <LockKeyhole className="h-4 w-4 text-orange-600" />
+            <div className="absolute -bottom-2 -right-2 bg-orange-100 dark:bg-orange-500/20 p-2 rounded-xl border border-orange-200 dark:border-orange-500/30 shadow-sm backdrop-blur-sm">
+              <LockKeyhole className="h-4 w-4 text-orange-600 dark:text-orange-400" />
             </div>
           )}
         </div>
-        <CardTitle className="text-2xl">{title || "Galeria de Imagens"}</CardTitle>
-        <p className="text-sm text-muted-foreground mt-2">
-          Expira em: {new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(expiresAt))}
+        <CardTitle className="text-2xl font-bold tracking-tight">{title || "Galeria de Imagens"}</CardTitle>
+        <p className="text-sm text-muted-foreground mt-2 font-medium">
+          Expira em: <span className="text-foreground">{new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(expiresAt))}</span>
         </p>
       </CardHeader>
 
-      <CardContent className="p-6">
+      <CardContent className="p-6 md:p-10">
         {isProtected && keyState !== "SUCCESS" && (
-          <div className="mb-8 p-6 bg-orange-50 border border-orange-200 rounded-xl max-w-lg mx-auto text-center space-y-4">
-            <div className="flex justify-center mb-2">
-              <ShieldCheck className="h-10 w-10 text-orange-500" />
+          <div className="mb-10 p-8 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-background border border-orange-200/60 dark:border-orange-900/50 rounded-3xl max-w-xl mx-auto text-center space-y-4 shadow-sm relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-orange-300/10 via-transparent to-transparent pointer-events-none" />
+            <div className="flex justify-center mb-4 relative z-10">
+              <div className="p-3 bg-white dark:bg-orange-900/30 rounded-2xl shadow-sm border border-orange-100 dark:border-orange-800">
+                <ShieldCheck className="h-8 w-8 text-orange-500" />
+              </div>
             </div>
-            <div>
-              <h4 className="text-lg font-bold text-orange-900">Galeria Protegida</h4>
-              <p className="text-sm text-orange-800 mt-1">
-                As imagens abaixo contêm marca d'água.
-                Insira a <span className="font-semibold">Chave de Acesso</span> fornecida pelo fotógrafo para liberar o download em alta resolução livre de marcas.
+            <div className="relative z-10">
+              <h4 className="text-xl font-bold text-orange-900 dark:text-orange-400">Galeria Protegida</h4>
+              <p className="text-sm text-orange-800/80 dark:text-orange-300/80 mt-2 max-w-md mx-auto leading-relaxed">
+                As imagens abaixo contêm marca d'água de proteção.
+                Insira a <span className="font-bold text-orange-900 dark:text-orange-300">Chave de Liberação</span> para baixar o arquivo original completo.
               </p>
             </div>
 
-            <div className="flex gap-2 max-w-sm mx-auto pt-2">
+            <div className="flex flex-col sm:flex-row gap-3 max-w-sm mx-auto pt-4 relative z-10">
               <Input
-                placeholder="Digite sua chave de acesso"
+                placeholder="Cole sua chave aqui"
                 value={keyInput}
                 onChange={(e) => setKeyInput(e.target.value)}
-                className="bg-white border-orange-300 focus-visible:ring-orange-500 text-center font-mono uppercase"
+                className="bg-white/80 dark:bg-black/50 backdrop-blur border-orange-200 dark:border-orange-800 focus-visible:ring-orange-500 text-center font-mono uppercase h-12 text-lg rounded-xl shadow-inner"
                 disabled={keyState === "VERIFYING"}
                 onKeyDown={(e) => e.key === "Enter" && handleVerifyKey()}
               />
               <Button
                 onClick={handleVerifyKey}
                 disabled={!keyInput.trim() || keyState === "VERIFYING"}
-                className="bg-orange-600 hover:bg-orange-700 text-white"
+                className="bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white h-12 px-8 rounded-xl shadow-lg shadow-orange-500/20 transition-all sm:w-auto w-full font-bold"
               >
-                {keyState === "VERIFYING" ? <Loader2 className="h-4 w-4 animate-spin" /> : "Desbloquear"}
+                {keyState === "VERIFYING" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Desbloquear"}
               </Button>
             </div>
             {keyState === "ERROR" && (
-              <p className="text-xs text-destructive font-medium">{keyErrorMessage}</p>
+              <p className="text-sm text-destructive font-medium animate-in fade-in slide-in-from-top-2 relative z-10">{keyErrorMessage}</p>
             )}
           </div>
         )}
@@ -161,44 +164,51 @@ export function DownloadViewer({ slug, zipUrl, previewZipUrl, title, expiresAt, 
         )}
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-12 gap-4">
-            <Loader2 className="h-10 w-10 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">Descompactando para visualização...</p>
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <Loader2 className="h-12 w-12 animate-spin text-primary/50" />
+            <p className="text-sm font-medium text-muted-foreground animate-pulse">Preparando galeria interativa...</p>
           </div>
         ) : error ? (
-          <Alert variant="destructive">
+          <Alert variant="destructive" className="max-w-md mx-auto rounded-2xl">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Erro na visualização</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
             {images.map((src, idx) => (
-              <div key={idx} className="aspect-square relative rounded-md overflow-hidden border bg-neutral-100">
+              <div
+                key={idx}
+                className="aspect-square relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 shadow-sm border border-black/5 dark:border-white/5 animate-in fade-in zoom-in-95 duration-1000 fill-mode-both"
+                style={{ animationDelay: `${idx * 50}ms` }}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={src}
                   alt={`Preview ${idx}`}
-                  className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
+                  className="object-cover w-full h-full hover:scale-110 transition-transform duration-700 cursor-pointer"
                   loading="lazy"
                 />
+                {isProtected && keyState !== "SUCCESS" && (
+                  <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+                )}
               </div>
             ))}
           </div>
         )}
       </CardContent>
 
-      <CardFooter className="flex flex-col gap-4 border-t bg-neutral-50/50 p-6">
+      <CardFooter className="flex flex-col gap-4 border-t border-border/40 bg-neutral-50/50 dark:bg-neutral-900/30 p-8">
         <Button
           size="lg"
-          className={`w-full md:w-auto min-w-[200px] ${isProtected && keyState !== "SUCCESS" ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`w-full md:w-auto min-w-[280px] h-14 rounded-2xl text-base font-bold shadow-lg transition-all ${isProtected && keyState !== "SUCCESS" ? "bg-neutral-200 dark:bg-neutral-800 text-neutral-500 hover:bg-neutral-200 cursor-not-allowed shadow-none" : "bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/95 hover:to-indigo-600/95 shadow-primary/20 hover:-translate-y-1"}`}
           asChild={!!unlockedZipUrl}
           disabled={isProtected && keyState !== "SUCCESS"}
         >
           {unlockedZipUrl ? (
             <a href={unlockedZipUrl} download>
-              <Download className="mr-2 h-5 w-5" />
-              Baixar Originais
+              <Download className="mr-2 h-6 w-6" />
+              Baixar Galeria Completa
             </a>
           ) : (
             <span>
@@ -207,9 +217,8 @@ export function DownloadViewer({ slug, zipUrl, previewZipUrl, title, expiresAt, 
             </span>
           )}
         </Button>
-        <p className="text-xs text-muted-foreground text-center">
-          {images.length > 0 ? `${images.length} imagens preparadas.` : "Arquivo pronto para download."}
-          {isProtected && keyState !== "SUCCESS" && " É necessário a chave de acesso para baixar o arquivo completo sem marcas d'água."}
+        <p className="text-sm text-muted-foreground text-center font-medium">
+          {images.length > 0 ? `${images.length} imagens processadas com sucesso.` : "Arquivo em alta resolução pronto para download."}
         </p>
       </CardFooter>
     </Card>
