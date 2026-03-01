@@ -79,7 +79,21 @@ model UploadSession {
   expiresAt     DateTime
   createdAt     DateTime      @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accesses LinkAccess[]
 
   @@map("upload_sessions")
+}
+
+model LinkAccess {
+  id              String   @id @default(cuid())
+  uploadSessionId String
+  ip              String?
+  userAgent       String?
+  whatsapp        String?
+  createdAt       DateTime @default(now())
+
+  uploadSession UploadSession @relation(fields: [uploadSessionId], references: [id], onDelete: Cascade)
+
+  @@map("link_accesses")
 }

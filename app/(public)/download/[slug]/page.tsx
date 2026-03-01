@@ -96,6 +96,25 @@ export default async function DownloadPage({ params }: PageProps) {
 
   const hasWhatsapp = !!loggedInUser?.whatsapp;
 
+  // 5. Registrar O acesso
+  try {
+    const { headers } = await import('next/headers');
+    const headersList = await headers();
+    const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || "Desconhecido";
+    const userAgent = headersList.get('user-agent') || "Desconhecido";
+
+    await prisma.linkAccess.create({
+      data: {
+        uploadSessionId: uploadSession.id,
+        ip: ip.split(',')[0].trim(),
+        userAgent: userAgent.substring(0, 190), // truncate just in case
+        whatsapp: loggedInUser?.whatsapp || null,
+      }
+    });
+  } catch (error) {
+    console.error("Falha ao registrar acesso:", error);
+  }
+
   // Decide qual ZIP mandar e se precisa de chave
   const isProtected = !!uploadSession.accessKey;
 
