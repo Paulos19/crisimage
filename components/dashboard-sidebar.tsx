@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UploadCloud, FileArchive, ActivitySquare, LogOut, Settings } from "lucide-react";
+import { UploadCloud, FileArchive, ActivitySquare, LogOut, Settings, LayoutDashboard } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +13,7 @@ interface SidebarItem {
 }
 
 const sidebarItems: SidebarItem[] = [
+    { icon: LayoutDashboard, label: "Visão Geral", href: "/dashboard" },
     { icon: UploadCloud, label: "Nova Compactação", href: "/dashboard/upload" },
     { icon: FileArchive, label: "Meus Uploads", href: "/dashboard/uploads" },
     { icon: ActivitySquare, label: "Relatório de Acessos", href: "/dashboard/acessos" },
