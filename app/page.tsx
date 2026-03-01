@@ -3,10 +3,11 @@ import { ArrowRight, ShieldCheck, Zap, Camera } from "lucide-react";
 import { SplineScene } from "@/components/spline-scene";
 import { StaggerTestimonials } from "@/components/ui/stagger-testimonials";
 import CallToAction from "@/components/ui/call-to-action";
+import { FrameSequenceCanvas } from "@/components/ui/frame-sequence-canvas";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] text-white overflow-hidden selection:bg-emerald-500/30">
+    <div className="relative min-h-screen bg-[#0a0a0a] text-white selection:bg-emerald-500/30">
 
       {/* ============================================= */}
       {/* NAVBAR — minimal, floating style               */}
@@ -127,6 +128,13 @@ export default function Home() {
             <span className="text-base md:text-lg font-black uppercase tracking-[0.2em] text-zinc-600 hover:text-emerald-400/60 transition-colors cursor-default">Corporativo</span>
           </div>
         </div>
+      </section>
+
+      {/* ============================================= */}
+      {/* CINEMATIC SCROLL — Frame Sequence Animation    */}
+      {/* ============================================= */}
+      <section id="cinematic" className="relative bg-[#0a0a0a]">
+        <FrameSequenceCanvas />
       </section>
 
       {/* ============================================= */}
