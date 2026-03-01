@@ -4,13 +4,13 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
-    // Verifica a existência do cookie de sessão do NextAuth.
-    // Em produção (HTTPS), o cookie ganha o prefixo __Secure-
-    const sessionToken =
-        request.cookies.get('next-auth.session-token') ||
-        request.cookies.get('__Secure-next-auth.session-token');
+    // Verifica de forma robusta a existência de qualquer cookie de sessão 
+    // (NextAuth v4 usa "next-auth.session-token", NextAuth v5 usa "authjs.session-token", e tem as versões HTTPS __Secure)
+    const hasSessionCookie = request.cookies.getAll().some(cookie =>
+        cookie.name.includes('session-token')
+    );
 
-    const isLoggedIn = !!sessionToken;
+    const isLoggedIn = hasSessionCookie;
 
     // Definição das rotas
     const isAuthRoute = pathname.startsWith('/login') || pathname.startsWith('/register');
