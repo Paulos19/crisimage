@@ -54,7 +54,7 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
               <Link
-                href="/dashboard"
+                href="/dashboard/upload"
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-full text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-14 px-8 w-full sm:w-auto"
               >
                 Começar Gratuitamente <ArrowRight className="ml-2 h-5 w-5" />
