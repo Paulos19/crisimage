@@ -3,9 +3,9 @@ import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import { DownloadViewer } from "@/components/download-viewer";
 import { WhatsAppModal } from "@/components/whatsapp-modal";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock } from "lucide-react";
+import { Clock, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { DownloadActions } from "@/components/download-actions";
 
@@ -22,9 +22,14 @@ export default async function DownloadPage({ params }: PageProps) {
     redirect(`/login?callbackUrl=/download/${slug}`);
   }
 
-  // 2. Busca Dados da Sessão de Upload
+  // 2. Busca Dados da Sessão de Upload E o usuário dono
   const uploadSession = await prisma.uploadSession.findUnique({
     where: { slug },
+    include: {
+      user: {
+        select: { name: true, whatsapp: true }
+      }
+    }
   });
 
   if (!uploadSession) return notFound();
@@ -33,49 +38,77 @@ export default async function DownloadPage({ params }: PageProps) {
   const isExpired = new Date() > new Date(uploadSession.expiresAt);
   if (isExpired) {
     return (
-      <Card className="max-w-md mx-auto mt-10 border-destructive/50">
+      <Card className="max-w-md mx-auto mt-10 border-destructive/50 shadow-lg">
         <CardHeader className="text-center">
-             <div className="mx-auto bg-destructive/10 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                <Clock className="h-6 w-6 text-destructive" />
-            </div>
-            <CardTitle className="text-destructive">Link Expirado</CardTitle>
+          <div className="mx-auto bg-destructive/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+            <Clock className="h-8 w-8 text-destructive" />
+          </div>
+          <CardTitle className="text-destructive text-2xl">Arquivo Expirado</CardTitle>
+          <CardDescription className="text-base mt-2">
+            O prazo de 5 dias para download das fotos expirou.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="text-center">
-            <p className="mb-4">Este arquivo não está mais disponível.</p>
-            <Button asChild variant="outline"><Link href="/dashboard">Ir para Dashboard</Link></Button>
+        <CardContent className="text-center space-y-6">
+          <div className="bg-muted p-4 rounded-lg">
+            <p className="text-sm font-medium mb-1">Deseja solicitar um novo link?</p>
+            <p className="text-xs text-muted-foreground mb-4">
+              Entre em contato diretamente com {uploadSession.user.name || "o fotógrafo"}.
+            </p>
+            {uploadSession.user.whatsapp ? (
+              <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-white">
+                <a
+                  href={`https://wa.me/55${uploadSession.user.whatsapp.replace(/\D/g, '')}?text=${encodeURIComponent(`Olá, o link da minha galeria "${uploadSession.title}" expirou. Poderia gerar um novo?`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MessageCircle className="mr-2 h-5 w-5" />
+                  Falar no WhatsApp
+                </a>
+              </Button>
+            ) : (
+              <p className="text-xs text-muted-foreground italic">
+                Não há número de WhatsApp cadastrado.
+              </p>
+            )}
+          </div>
+          <Button asChild variant="outline" className="w-full">
+            <Link href="/dashboard">Voltar para o Início</Link>
+          </Button>
         </CardContent>
       </Card>
     );
   }
 
-  // 4. Verificação CRÍTICA do WhatsApp
-  // Não confiamos apenas na sessão aqui, buscamos o user atualizado no banco
-  // para garantir que o Modal suma imediatamente após o update.
-  const user = await prisma.user.findUnique({
+  // 4. Verificação CRÍTICA do WhatsApp para o usuário logado
+  const loggedInUser = await prisma.user.findUnique({
     where: { id: session.user.id },
-    select: { whatsapp: true } // Otimizado, pega só o campo necessário
+    select: { whatsapp: true }
   });
 
-  const hasWhatsapp = !!user?.whatsapp;
+  const hasWhatsapp = !!loggedInUser?.whatsapp;
+
+  // Decide qual ZIP mandar e se precisa de chave
+  const isProtected = !!uploadSession.accessKey;
 
   return (
     <>
-      {/* Renderiza o Modal se NÃO tiver whatsapp */}
       <WhatsAppModal isOpen={!hasWhatsapp} />
-      
-      {/* Aplica blur e desabilita cliques se o modal estiver ativo */}
+
       <div className={!hasWhatsapp ? "blur-sm pointer-events-none select-none h-screen overflow-hidden" : ""}>
-        <DownloadViewer 
-            zipUrl={uploadSession.zipUrl} 
-            title={uploadSession.title}
-            expiresAt={uploadSession.expiresAt}
+        <DownloadViewer
+          slug={uploadSession.slug}
+          zipUrl={uploadSession.zipUrl}
+          previewZipUrl={uploadSession.previewZipUrl}
+          title={uploadSession.title}
+          expiresAt={uploadSession.expiresAt}
+          isProtected={isProtected}
         />
-        
+
         <div className="mt-8 max-w-4xl mx-auto flex justify-center pb-10">
-            <DownloadActions 
-                link={`${process.env.NEXTAUTH_URL}/download/${slug}`} 
-                title={uploadSession.title || "Imagens"} 
-            />
+          <DownloadActions
+            link={`${process.env.NEXTAUTH_URL}/download/${slug}`}
+            title={uploadSession.title || "Imagens"}
+          />
         </div>
       </div>
     </>

@@ -19,16 +19,16 @@ enum SessionStatus {
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String          @unique
+  email         String    @unique
   password      String?
   whatsapp      String?
   emailVerified DateTime?
   image         String?
-  role          Role            @default(USER)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
   accounts       Account[]
   sessions       Session[]
@@ -68,14 +68,16 @@ model Session {
 }
 
 model UploadSession {
-  id        String        @id @default(cuid())
-  slug      String        @unique
-  userId    String
-  title     String?
-  zipUrl    String
-  status    SessionStatus @default(READY) // Campo reintroduzido
-  expiresAt DateTime
-  createdAt DateTime      @default(now())
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  userId        String
+  title         String?
+  zipUrl        String
+  previewZipUrl String?
+  accessKey     String?
+  status        SessionStatus @default(READY)
+  expiresAt     DateTime
+  createdAt     DateTime      @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
