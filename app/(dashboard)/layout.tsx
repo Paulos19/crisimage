@@ -32,7 +32,7 @@ export default async function DashboardLayout({
                 <div className="h-7 w-7 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg flex items-center justify-center shadow-md shadow-emerald-500/20">
                   <span className="text-white font-black text-xs">C</span>
                 </div>
-                <h1 className="text-base font-black tracking-tight uppercase">Crisimage</h1>
+                <h1 className="text-base font-black tracking-tight uppercase">LetImage</h1>
               </div>
             </div>
 

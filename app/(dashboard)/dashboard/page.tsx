@@ -6,7 +6,7 @@ import { Clock, DownloadCloud, Fingerprint, Eye, ArrowRight, ShieldCheck, HelpCi
 import Link from "next/link";
 
 export const metadata = {
-    title: "Visão Geral - Crisimage",
+    title: "Visão Geral - LetImage",
 };
 
 export default async function DashboardPage() {

@@ -140,7 +140,7 @@ export default async function DownloadPage({ params }: PageProps) {
               {uploadSession.title || "Sua Galeria"}
             </h1>
             <p className="text-base md:text-lg text-zinc-500 font-medium uppercase tracking-wider">
-              Por {uploadSession.user.name || "Crisimage Studio"}
+              Por {uploadSession.user.name || "LetImage Studio"}
             </p>
           </div>
         </div>

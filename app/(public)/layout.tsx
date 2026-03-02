@@ -8,7 +8,7 @@ export default function PublicLayout({
       <header className="mb-8 text-center">
         <h1 className="text-2xl font-black tracking-tight uppercase">
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-emerald-600">★</span>{" "}
-          Crisimage
+          LetImage
         </h1>
         <p className="text-xs text-zinc-600 font-bold uppercase tracking-[0.3em] mt-1">
           Compartilhamento seguro de imagens

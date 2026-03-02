@@ -45,7 +45,7 @@ export function LpNavbar() {
                             ★
                         </div>
                         <span className="text-sm font-black tracking-tight uppercase text-white">
-                            Crisimage
+                            LetImage
                         </span>
                     </a>
 
@@ -175,7 +175,7 @@ export function LpNavbar() {
                         }}
                     >
                         <span className="text-[10px] font-bold text-zinc-700 uppercase tracking-[0.2em]">
-                            © {new Date().getFullYear()} Crisimage
+                            © {new Date().getFullYear()} LetImage
                         </span>
                         <span className="text-[10px] font-bold text-emerald-500/50 uppercase tracking-[0.2em]">
                             v1.0

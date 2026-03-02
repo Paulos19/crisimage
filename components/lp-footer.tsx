@@ -32,7 +32,7 @@ export function LpFooter() {
                                 ★
                             </div>
                             <span className="text-sm font-black tracking-tight uppercase text-white">
-                                Crisimage
+                                LetImage
                             </span>
                         </div>
                         <p className="text-sm text-zinc-600 leading-relaxed max-w-xs font-medium">
@@ -48,7 +48,7 @@ export function LpFooter() {
                                 <Instagram className="h-4 w-4" />
                             </a>
                             <a
-                                href="mailto:contato@crisimage.com"
+                                href="mailto:contato@letimage.com"
                                 className="h-10 w-10 rounded-lg border border-white/[0.06] bg-white/[0.02] flex items-center justify-center text-zinc-600 hover:text-emerald-400 hover:border-emerald-500/20 hover:bg-emerald-500/5 transition-all"
                             >
                                 <Mail className="h-4 w-4" />
@@ -117,7 +117,7 @@ export function LpFooter() {
                 {/* Bottom bar */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-[11px] text-zinc-700 font-medium uppercase tracking-wider">
-                        © {new Date().getFullYear()} Crisimage. Todos os direitos reservados.
+                        © {new Date().getFullYear()} LetImage. Todos os direitos reservados.
                     </p>
                     <p className="text-[11px] text-zinc-700 font-medium">
                         Feito com <span className="text-emerald-500">♥</span> para fotógrafos

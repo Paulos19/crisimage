@@ -9,7 +9,7 @@ const SQRT_5000 = Math.sqrt(5000);
 const testimonials = [
     {
         tempId: 0,
-        testimonial: "Desde que comecei a usar a Crisimage, meus clientes ficam impressionados com a experiência de entrega. A galeria é linda e a marca d'água me dá segurança total.",
+        testimonial: "Desde que comecei a usar a LetImage, meus clientes ficam impressionados com a experiência de entrega. A galeria é linda e a marca d'água me dá segurança total.",
         by: "Camila Ferreira, Fotógrafa de Casamentos",
         imgSrc: "https://i.pravatar.cc/150?img=45"
     },
@@ -27,7 +27,7 @@ const testimonials = [
     },
     {
         tempId: 3,
-        testimonial: "Profissionalismo em outro nível. Meus clientes achavam que eu tinha uma equipe de TI por trás. É só a Crisimage mesmo.",
+        testimonial: "Profissionalismo em outro nível. Meus clientes achavam que eu tinha uma equipe de TI por trás. É só a LetImage mesmo.",
         by: "Thiago Oliveira, Fotógrafo de Eventos",
         imgSrc: "https://i.pravatar.cc/150?img=11"
     },
@@ -39,19 +39,19 @@ const testimonials = [
     },
     {
         tempId: 5,
-        testimonial: "Eu estava perdida antes de encontrar a Crisimage. Já economizei mais de 100 horas de trabalho manual!",
+        testimonial: "Eu estava perdida antes de encontrar a LetImage. Já economizei mais de 100 horas de trabalho manual!",
         by: "Beatriz Lima, Fotógrafa de Moda",
         imgSrc: "https://i.pravatar.cc/150?img=44"
     },
     {
         tempId: 6,
-        testimonial: "Demorei para adotar, mas agora que estou na Crisimage, nunca mais volto. Meu fluxo de trabalho mudou completamente.",
+        testimonial: "Demorei para adotar, mas agora que estou na LetImage, nunca mais volto. Meu fluxo de trabalho mudou completamente.",
         by: "Lucas Rocha, Fotógrafo Esportivo",
         imgSrc: "https://i.pravatar.cc/150?img=53"
     },
     {
         tempId: 7,
-        testimonial: "Eu ficaria perdido sem as análises detalhadas da Crisimage. O ROI é facilmente 100x para o meu estúdio.",
+        testimonial: "Eu ficaria perdido sem as análises detalhadas da LetImage. O ROI é facilmente 100x para o meu estúdio.",
         by: "Daniel Souza, Estúdio Profissional",
         imgSrc: "https://i.pravatar.cc/150?img=14"
     },
@@ -63,13 +63,13 @@ const testimonials = [
     },
     {
         tempId: 9,
-        testimonial: "Mudei há 2 anos e nunca mais olhei para trás. A Crisimage transformou meu negócio.",
+        testimonial: "Mudei há 2 anos e nunca mais olhei para trás. A LetImage transformou meu negócio.",
         by: "André Costa, Fotógrafo Documental",
         imgSrc: "https://i.pravatar.cc/150?img=60"
     },
     {
         tempId: 10,
-        testimonial: "Busquei uma solução assim por anos. Finalmente encontrei na Crisimage tudo que precisava!",
+        testimonial: "Busquei uma solução assim por anos. Finalmente encontrei na LetImage tudo que precisava!",
         by: "Patrícia Reis, Fotógrafa de Família",
         imgSrc: "https://i.pravatar.cc/150?img=29"
     },

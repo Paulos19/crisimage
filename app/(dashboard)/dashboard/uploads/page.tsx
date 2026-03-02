@@ -4,7 +4,7 @@ import { Loader2, FileArchive, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
-    title: "Meus Uploads - Crisimage",
+    title: "Meus Uploads - LetImage",
 };
 
 export default function UploadsPage() {

@@ -6,7 +6,7 @@ import { ptBR } from "date-fns/locale";
 import Link from "next/link";
 
 export const metadata = {
-    title: "Acessos aos Links - Crisimage",
+    title: "Acessos aos Links - LetImage",
 };
 
 export default async function AcessosPage() {

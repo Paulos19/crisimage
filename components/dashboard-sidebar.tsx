@@ -35,7 +35,7 @@ export function DashboardSidebar() {
                     </div>
                     <div>
                         <h2 className="text-lg font-black tracking-tight text-white uppercase">
-                            Crisimage
+                            LetImage
                         </h2>
                         <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.25em]">
                             Painel Studio

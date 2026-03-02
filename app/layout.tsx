@@ -22,7 +22,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Crisimage — A plataforma definitiva para fotógrafos",
+  title: "LetImage — A plataforma definitiva para fotógrafos",
   description: "Organize suas galerias, aplique marcas d'água automaticamente e entregue os originais com segurança após a venda.",
 };
 

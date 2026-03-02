@@ -504,7 +504,7 @@ export function FrameSequenceCanvas() {
                 Memórias que explodem em emoção.
               </p>
               <p className="text-zinc-500/80 text-xs sm:text-sm md:text-base mb-8 sm:mb-10 max-w-md mx-auto leading-relaxed normal-case">
-                Com a Crisimage, cada entrega se torna um momento inesquecível para seu cliente.
+                Com a LetImage, cada entrega se torna um momento inesquecível para seu cliente.
               </p>
               <Link
                 href="/dashboard/upload"

@@ -232,7 +232,7 @@ export default function Home() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-emerald-700">recomenda.</span>
             </h2>
             <p className="text-zinc-500 text-sm md:text-base max-w-xl font-medium uppercase tracking-wider leading-relaxed">
-              // Fotógrafos que transformaram sua entrega com a Crisimage.
+              // Fotógrafos que transformaram sua entrega com a LetImage.
             </p>
           </div>
 

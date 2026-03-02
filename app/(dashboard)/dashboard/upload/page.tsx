@@ -3,7 +3,7 @@ import { Zap, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
-    title: "Nova Compactação - Crisimage",
+    title: "Nova Compactação - LetImage",
 };
 
 export default function UploadPage() {

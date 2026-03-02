@@ -67,7 +67,7 @@ export function DashboardMobileNav() {
                                 </div>
                                 <div>
                                     <h2 className="text-base font-black tracking-tight text-white uppercase leading-none">
-                                        Crisimage
+                                        LetImage
                                     </h2>
                                     <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-0.5">
                                         Painel Studio
@@ -123,7 +123,7 @@ export function DashboardMobileNav() {
                             </Link>
 
                             <div className="px-4 mt-4 mb-2 flex items-center justify-between">
-                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-700">Crisimage Studio</span>
+                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-700">LetImage Studio</span>
                                 <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-emerald-500/50">v1.0</span>
                             </div>
                         </div>
