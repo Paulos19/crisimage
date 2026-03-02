@@ -31,8 +31,8 @@ export function LpNavbar() {
             {/* Desktop + Mobile top bar */}
             <header
                 className={`fixed top-0 z-50 w-full transition-all duration-500 ${scrolled
-                        ? "bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/[0.04] shadow-lg shadow-black/20"
-                        : "bg-transparent"
+                    ? "bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/[0.04] shadow-lg shadow-black/20"
+                    : "bg-transparent"
                     }`}
             >
                 <div className="mx-auto px-5 lg:px-10 h-16 lg:h-20 flex items-center justify-between">
@@ -99,8 +99,8 @@ export function LpNavbar() {
             {/* ============================================= */}
             <div
                 className={`fixed inset-0 z-40 bg-[#080808] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] lg:hidden ${isOpen
-                        ? "opacity-100 pointer-events-auto"
-                        : "opacity-0 pointer-events-none"
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
                     }`}
             >
                 {/* Background decorative elements */}
