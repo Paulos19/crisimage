@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { MessageCircle, Loader2, CheckCircle } from "lucide-react";
 import { sendWhatsappNotification } from "@/actions/trigger-whatsapp";
-import { toast } from "sonner"; // Ou use o hook de toast do shadcn se tiver instalado
 
 export function DownloadActions({ link, title }: { link: string, title: string }) {
     const [loading, setLoading] = useState(false);
@@ -13,10 +11,9 @@ export function DownloadActions({ link, title }: { link: string, title: string }
     const handleSendWhatsapp = async () => {
         setLoading(true);
         const res = await sendWhatsappNotification(link, title);
-        
+
         if (res.success) {
             setSent(true);
-            // toast.success("Enviado para seu WhatsApp!");
         } else {
             alert("Erro ao enviar: " + res.error);
         }
@@ -25,25 +22,27 @@ export function DownloadActions({ link, title }: { link: string, title: string }
 
     return (
         <div className="flex gap-4">
-            {/* O botão de Download já está dentro do DownloadViewer, 
-                mas se quiser um botão extra aqui, pode colocar.
-                O foco aqui é o botão do N8N. */}
-            
-            <Button 
-                onClick={handleSendWhatsapp} 
+            <button
+                onClick={handleSendWhatsapp}
                 disabled={loading || sent}
-                variant="secondary"
-                className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white"
+                className={`
+                    w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all
+                    ${sent
+                        ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 cursor-default"
+                        : "bg-emerald-500 text-black hover:bg-emerald-400 shadow-lg shadow-emerald-500/20"
+                    }
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                `}
             >
                 {loading ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                 ) : sent ? (
-                    <CheckCircle className="mr-2 h-4 w-4" />
+                    <CheckCircle className="h-4 w-4" />
                 ) : (
-                    <MessageCircle className="mr-2 h-4 w-4" />
+                    <MessageCircle className="h-4 w-4" />
                 )}
                 {sent ? "Enviado!" : "Receber no WhatsApp"}
-            </Button>
+            </button>
         </div>
     );
 }

@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 import JSZip from "jszip";
-import { Download, FileArchive, Loader2, Image as ImageIcon, AlertCircle, LockKeyhole, ShieldCheck, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Download, FileArchive, Loader2, AlertCircle, LockKeyhole, ShieldCheck, Check, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { verifyAccessKey } from "@/actions/verify-key";
 
@@ -33,18 +30,15 @@ export function DownloadViewer({ slug, zipUrl, previewZipUrl, title, expiresAt, 
 
     async function fetchAndUnzip() {
       try {
-        // 1. Baixar o arquivo ZIP (Prioriza o preview se for protegido, senão o original)
         const targetUrl = (isProtected && previewZipUrl) ? previewZipUrl : zipUrl;
 
         const response = await fetch(targetUrl);
         if (!response.ok) throw new Error("Falha ao baixar arquivo");
         const blob = await response.blob();
 
-        // 2. Ler o ZIP com JSZip
         const zip = await JSZip.loadAsync(blob);
         const imageUrls: string[] = [];
 
-        // 3. Iterar e criar URLs para preview
         const entries = Object.values(zip.files).filter(file =>
           !file.dir && /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name)
         );
@@ -95,36 +89,42 @@ export function DownloadViewer({ slug, zipUrl, previewZipUrl, title, expiresAt, 
   };
 
   return (
-    <Card className="w-full shadow-2xl border-none bg-white/90 dark:bg-card/90 backdrop-blur-md rounded-3xl overflow-hidden mt-8">
-      <CardHeader className="text-center border-b border-border/40 bg-neutral-50/50 dark:bg-neutral-900/30 pb-8 pt-6">
-        <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary/20 to-indigo-500/20 rounded-2xl flex items-center justify-center mb-4 relative shadow-sm">
-          <FileArchive className="h-8 w-8 text-primary" />
+    <div className="w-full bg-white/[0.02] border border-white/[0.06] backdrop-blur-md rounded-2xl overflow-hidden mt-8">
+      {/* Top accent */}
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent" />
+
+      {/* Header */}
+      <div className="text-center border-b border-white/[0.06] pb-8 pt-6 px-6">
+        <div className="mx-auto w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mb-4 relative shadow-lg shadow-emerald-500/10">
+          <FileArchive className="h-8 w-8 text-emerald-400" />
           {isProtected && keyState !== "SUCCESS" && (
-            <div className="absolute -bottom-2 -right-2 bg-orange-100 dark:bg-orange-500/20 p-2 rounded-xl border border-orange-200 dark:border-orange-500/30 shadow-sm backdrop-blur-sm">
-              <LockKeyhole className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+            <div className="absolute -bottom-2 -right-2 bg-amber-500/10 p-2 rounded-xl border border-amber-500/20 backdrop-blur-sm">
+              <LockKeyhole className="h-4 w-4 text-amber-500" />
             </div>
           )}
         </div>
-        <CardTitle className="text-2xl font-bold tracking-tight">{title || "Galeria de Imagens"}</CardTitle>
-        <p className="text-sm text-muted-foreground mt-2 font-medium">
-          Expira em: <span className="text-foreground">{new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(expiresAt))}</span>
+        <h2 className="text-2xl font-black tracking-tight text-white uppercase">{title || "Galeria de Imagens"}</h2>
+        <p className="text-xs text-zinc-600 mt-2 font-medium uppercase tracking-wider">
+          Expira em: <span className="text-zinc-400">{new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(expiresAt))}</span>
         </p>
-      </CardHeader>
+      </div>
 
-      <CardContent className="p-6 md:p-10">
+      {/* Content */}
+      <div className="p-6 md:p-10">
+        {/* Protection Key Input */}
         {isProtected && keyState !== "SUCCESS" && (
-          <div className="mb-10 p-8 bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-950/20 dark:to-background border border-orange-200/60 dark:border-orange-900/50 rounded-3xl max-w-xl mx-auto text-center space-y-4 shadow-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-orange-300/10 via-transparent to-transparent pointer-events-none" />
+          <div className="mb-10 p-8 bg-white/[0.02] border border-amber-500/20 rounded-2xl max-w-xl mx-auto text-center space-y-4 relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-amber-500/[0.03] via-transparent to-transparent pointer-events-none" />
             <div className="flex justify-center mb-4 relative z-10">
-              <div className="p-3 bg-white dark:bg-orange-900/30 rounded-2xl shadow-sm border border-orange-100 dark:border-orange-800">
-                <ShieldCheck className="h-8 w-8 text-orange-500" />
+              <div className="p-3 bg-amber-500/10 rounded-2xl border border-amber-500/20">
+                <ShieldCheck className="h-8 w-8 text-amber-500" />
               </div>
             </div>
             <div className="relative z-10">
-              <h4 className="text-xl font-bold text-orange-900 dark:text-orange-400">Galeria Protegida</h4>
-              <p className="text-sm text-orange-800/80 dark:text-orange-300/80 mt-2 max-w-md mx-auto leading-relaxed">
-                As imagens abaixo contêm marca d'água de proteção.
-                Insira a <span className="font-bold text-orange-900 dark:text-orange-300">Chave de Liberação</span> para baixar o arquivo original completo.
+              <h4 className="text-xl font-black text-amber-400 uppercase tracking-tight">Galeria Protegida</h4>
+              <p className="text-xs text-zinc-500 mt-2 max-w-md mx-auto leading-relaxed">
+                As imagens abaixo contêm marca d&apos;água de proteção.
+                Insira a <span className="font-bold text-amber-400">Chave de Liberação</span> para baixar o arquivo original completo.
               </p>
             </div>
 
@@ -133,53 +133,54 @@ export function DownloadViewer({ slug, zipUrl, previewZipUrl, title, expiresAt, 
                 placeholder="Cole sua chave aqui"
                 value={keyInput}
                 onChange={(e) => setKeyInput(e.target.value)}
-                className="bg-white/80 dark:bg-black/50 backdrop-blur border-orange-200 dark:border-orange-800 focus-visible:ring-orange-500 text-center font-mono uppercase h-12 text-lg rounded-xl shadow-inner"
+                className="bg-white/[0.03] border-amber-500/20 text-amber-400 placeholder:text-zinc-700 focus:border-amber-500/40 focus:ring-amber-500/20 text-center font-mono uppercase h-12 text-lg rounded-xl"
                 disabled={keyState === "VERIFYING"}
                 onKeyDown={(e) => e.key === "Enter" && handleVerifyKey()}
               />
-              <Button
+              <button
                 onClick={handleVerifyKey}
                 disabled={!keyInput.trim() || keyState === "VERIFYING"}
-                className="bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white h-12 px-8 rounded-xl shadow-lg shadow-orange-500/20 transition-all sm:w-auto w-full font-bold"
+                className="h-12 px-8 rounded-xl font-bold text-sm bg-gradient-to-r from-amber-500 to-amber-600 text-black hover:from-amber-400 hover:to-amber-500 shadow-lg shadow-amber-500/20 transition-all sm:w-auto w-full disabled:opacity-30 disabled:cursor-not-allowed inline-flex items-center justify-center"
               >
                 {keyState === "VERIFYING" ? <Loader2 className="h-5 w-5 animate-spin" /> : "Desbloquear"}
-              </Button>
+              </button>
             </div>
             {keyState === "ERROR" && (
-              <p className="text-sm text-destructive font-medium animate-in fade-in slide-in-from-top-2 relative z-10">{keyErrorMessage}</p>
+              <p className="text-sm text-red-400 font-bold relative z-10">{keyErrorMessage}</p>
             )}
           </div>
         )}
 
+        {/* Success unlocked */}
         {isProtected && keyState === "SUCCESS" && (
-          <div className="mb-8 p-4 bg-green-50 border border-green-200 rounded-xl max-w-lg mx-auto text-center flex items-center justify-center gap-3">
-            <div className="bg-green-100 p-2 rounded-full">
-              <Check className="h-5 w-5 text-green-600" />
+          <div className="mb-8 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl max-w-lg mx-auto text-center flex items-center justify-center gap-3">
+            <div className="bg-emerald-500/20 p-2 rounded-full">
+              <Check className="h-5 w-5 text-emerald-400" />
             </div>
             <div className="text-left">
-              <h4 className="font-bold text-green-900">Acesso Liberado!</h4>
-              <p className="text-xs text-green-800">Você já pode baixar as fotos originais sem marca d'água.</p>
+              <h4 className="font-black text-emerald-400 uppercase tracking-tight text-sm">Acesso Liberado!</h4>
+              <p className="text-[11px] text-zinc-500">Você já pode baixar as fotos originais sem marca d&apos;água.</p>
             </div>
           </div>
         )}
 
+        {/* Gallery */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 gap-4">
-            <Loader2 className="h-12 w-12 animate-spin text-primary/50" />
-            <p className="text-sm font-medium text-muted-foreground animate-pulse">Preparando galeria interativa...</p>
+            <Loader2 className="h-12 w-12 animate-spin text-emerald-500/50" />
+            <p className="text-xs font-bold text-zinc-600 uppercase tracking-wider animate-pulse">Preparando galeria interativa...</p>
           </div>
         ) : error ? (
-          <Alert variant="destructive" className="max-w-md mx-auto rounded-2xl">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Erro na visualização</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
+          <div className="max-w-md mx-auto p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-center">
+            <AlertCircle className="h-5 w-5 text-red-400 mx-auto mb-2" />
+            <p className="text-sm text-red-400 font-medium">{error}</p>
+          </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-5">
             {images.map((src, idx) => (
               <div
                 key={idx}
-                className="aspect-square relative rounded-2xl overflow-hidden bg-neutral-100 dark:bg-neutral-800 shadow-sm border border-black/5 dark:border-white/5 animate-in fade-in zoom-in-95 duration-1000 fill-mode-both"
+                className="aspect-square relative rounded-xl overflow-hidden bg-white/[0.03] border border-white/[0.06]"
                 style={{ animationDelay: `${idx * 50}ms` }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -196,31 +197,29 @@ export function DownloadViewer({ slug, zipUrl, previewZipUrl, title, expiresAt, 
             ))}
           </div>
         )}
-      </CardContent>
+      </div>
 
-      <CardFooter className="flex flex-col gap-4 border-t border-border/40 bg-neutral-50/50 dark:bg-neutral-900/30 p-8">
-        <Button
-          size="lg"
-          className={`w-full md:w-auto min-w-[280px] h-14 rounded-2xl text-base font-bold shadow-lg transition-all ${isProtected && keyState !== "SUCCESS" ? "bg-neutral-200 dark:bg-neutral-800 text-neutral-500 hover:bg-neutral-200 cursor-not-allowed shadow-none" : "bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/95 hover:to-indigo-600/95 shadow-primary/20 hover:-translate-y-1"}`}
-          asChild={!!unlockedZipUrl}
-          disabled={isProtected && keyState !== "SUCCESS"}
-        >
-          {unlockedZipUrl ? (
-            <a href={unlockedZipUrl} download>
-              <Download className="mr-2 h-6 w-6" />
-              Baixar Galeria Completa
-            </a>
-          ) : (
-            <span>
-              <LockKeyhole className="mr-2 h-5 w-5" />
-              Download Bloqueado
-            </span>
-          )}
-        </Button>
-        <p className="text-sm text-muted-foreground text-center font-medium">
+      {/* Footer */}
+      <div className="flex flex-col items-center gap-4 border-t border-white/[0.06] p-8">
+        {unlockedZipUrl ? (
+          <a
+            href={unlockedZipUrl}
+            download
+            className="inline-flex items-center justify-center gap-2 min-w-[280px] h-14 rounded-xl text-sm font-bold uppercase tracking-wider bg-emerald-500 text-black hover:bg-emerald-400 shadow-lg shadow-emerald-500/20 transition-all hover:-translate-y-0.5"
+          >
+            <Download className="h-5 w-5" />
+            Baixar Galeria Completa
+          </a>
+        ) : (
+          <div className="inline-flex items-center justify-center gap-2 min-w-[280px] h-14 rounded-xl text-sm font-bold uppercase tracking-wider bg-white/[0.04] text-zinc-600 border border-white/[0.06] cursor-not-allowed">
+            <LockKeyhole className="h-5 w-5" />
+            Download Bloqueado
+          </div>
+        )}
+        <p className="text-xs text-zinc-600 text-center font-medium">
           {images.length > 0 ? `${images.length} imagens processadas com sucesso.` : "Arquivo em alta resolução pronto para download."}
         </p>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 }
