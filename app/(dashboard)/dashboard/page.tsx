@@ -48,18 +48,18 @@ export default async function DashboardPage() {
                             // Dashboard
                         </span>
                     </div>
-                    <h2 className="text-4xl font-black tracking-tight text-white uppercase">Visão Geral</h2>
-                    <p className="text-sm text-zinc-500 mt-1 font-medium uppercase tracking-wider">
+                    <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white uppercase">Visão Geral</h2>
+                    <p className="text-[10px] sm:text-sm text-zinc-500 mt-1 font-medium uppercase tracking-wider">
                         Acompanhe as métricas de entrega do seu estúdio.
                     </p>
                 </div>
                 <Link
                     href="/dashboard/upload"
-                    className="group inline-flex items-center gap-2 text-sm font-bold bg-emerald-500 text-black rounded-full px-6 py-3 hover:bg-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
+                    className="group inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold bg-emerald-500 text-black rounded-full px-5 sm:px-6 py-3 hover:bg-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
                 >
-                    <DownloadCloud className="w-4 h-4" />
+                    <DownloadCloud className="w-4 h-4 shrink-0" />
                     Nova Compactação
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                    <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
             </div>
 
@@ -154,7 +154,7 @@ export default async function DashboardPage() {
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left">
+                        <table className="w-full text-sm text-left min-w-[600px]">
                             <thead>
                                 <tr className="border-b border-white/[0.04]">
                                     <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Galeria</th>

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { UserNav } from "@/components/user-nav";
 import { DashboardSidebar } from "@/components/dashboard-sidebar";
+import { DashboardMobileNav } from "@/components/dashboard-mobile-nav";
 
 export default async function DashboardLayout({
   children,
@@ -24,12 +25,15 @@ export default async function DashboardLayout({
         {/* Topbar */}
         <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[#0a0a0a]/80 border-b border-white/[0.06] flex-none">
           <div className="flex h-16 items-center px-6 lg:px-8 justify-between md:justify-end">
-            {/* Mobile Logo */}
-            <div className="flex items-center gap-2.5 md:hidden">
-              <div className="h-8 w-8 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg flex items-center justify-center shadow-md shadow-emerald-500/20">
-                <span className="text-white font-black text-sm">C</span>
+            {/* Mobile Nav & Logo */}
+            <div className="flex items-center gap-3 md:hidden">
+              <DashboardMobileNav />
+              <div className="flex items-center gap-2">
+                <div className="h-7 w-7 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg flex items-center justify-center shadow-md shadow-emerald-500/20">
+                  <span className="text-white font-black text-xs">C</span>
+                </div>
+                <h1 className="text-base font-black tracking-tight uppercase">Crisimage</h1>
               </div>
-              <h1 className="text-lg font-black tracking-tight uppercase">Crisimage</h1>
             </div>
 
             <div className="flex items-center gap-4">

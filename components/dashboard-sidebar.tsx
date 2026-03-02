@@ -11,7 +11,7 @@ interface SidebarItem {
     href: string;
 }
 
-const sidebarItems: SidebarItem[] = [
+export const sidebarItems: SidebarItem[] = [
     { icon: LayoutDashboard, label: "Visão Geral", href: "/dashboard" },
     { icon: UploadCloud, label: "Nova Compactação", href: "/dashboard/upload" },
     { icon: FileArchive, label: "Meus Uploads", href: "/dashboard/uploads" },
