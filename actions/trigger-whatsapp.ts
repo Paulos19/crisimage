@@ -5,25 +5,32 @@ import { prisma } from "@/lib/prisma"; // Importação necessária
 
 export async function sendWhatsappNotification(link: string, title: string) {
   const session = await auth();
-  
-  // 1. Verificação básica de autenticação (apenas ID)
-  if (!session?.user?.id) {
-    return { error: "Não autorizado." };
+
+  let whatsapp: string | null = null;
+  let userName: string = "Usuário";
+
+  if (session?.user?.id) {
+    // 2. BUSCA DIRETA NO BANCO (Fonte da Verdade)
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: {
+        whatsapp: true,
+        name: true
+      }
+    });
+    whatsapp = user?.whatsapp || null;
+    userName = user?.name || "Usuário";
+  } else {
+    // 3. Busca no cookie de visitante
+    const { cookies } = await import('next/headers');
+    const cookieStore = await cookies();
+    whatsapp = cookieStore.get('guest_whatsapp')?.value || null;
+    userName = "Visitante";
   }
 
-  // 2. BUSCA DIRETA NO BANCO (Fonte da Verdade)
-  // Isso resolve o problema de "Sessão desatualizada" ou "Campo faltando na sessão"
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { 
-      whatsapp: true, 
-      name: true 
-    }
-  });
-
-  // 3. Validação do dado fresco
-  if (!user || !user.whatsapp) {
-    return { error: "Usuário sem WhatsApp cadastrado." };
+  // 4. Validação do dado fesco
+  if (!whatsapp) {
+    return { error: "Número do WhatsApp não encontrado." };
   }
 
   const webhookUrl = process.env.N8N_WEBHOOK_URL;
@@ -35,9 +42,9 @@ export async function sendWhatsappNotification(link: string, title: string) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: session.user.id,
-        name: user.name || "Usuário", // Usa o nome do banco
-        phone: user.whatsapp,          // Usa o whats do banco
+        userId: session?.user?.id || "GUEST",
+        name: userName,
+        phone: whatsapp,
         downloadLink: link,
         projectTitle: title,
         timestamp: new Date().toISOString()

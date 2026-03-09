@@ -5,34 +5,61 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { updateUserPhone } from "@/actions/update-phone";
-import { useRouter } from "next/navigation";
+import { setGuestPhone } from "@/actions/set-guest-phone";
+import { useRouter, useParams } from "next/navigation";
 import { Loader2, ShieldCheck, MessageCircle, Sparkles } from "lucide-react";
 
-export function WhatsAppModal({ isOpen }: { isOpen: boolean }) {
+interface WhatsAppModalProps {
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}
+
+export function WhatsAppModal({ isOpen: controlledOpen, onOpenChange }: WhatsAppModalProps) {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const params = useParams();
+
+  // Se for controlado externamente, usamos as props. Senão, ele fica fechado por padrão (será aberto pelo DownloadActions)
+  const isInternalOpen = controlledOpen !== undefined ? controlledOpen : false;
 
   const handleSubmit = async () => {
     if (phone.length < 10) return;
 
     setLoading(true);
 
-    const res = await updateUserPhone(phone);
+    // Tenta atualizar o telefone do usuário logado (se houver) ou define como guest
+    const res = await updateUserPhone(phone).catch(async (err: any) => {
+      // Se falhar por falta de sessão, tenta como guest
+      return await setGuestPhone(phone);
+    });
 
     if (res.success) {
+      if (onOpenChange) onOpenChange(false);
       router.refresh();
     } else {
-      alert(res.error);
+      // Caso o erro de updateUserPhone seja apenas "Não autorizado", tentamos setGuestPhone diretamente
+      if (res.error === "Não autorizado") {
+        const guestRes = await setGuestPhone(phone);
+        if (guestRes.success) {
+          if (onOpenChange) onOpenChange(false);
+          router.refresh();
+          return;
+        }
+        alert(guestRes.error);
+      } else {
+        alert(res.error);
+      }
       setLoading(false);
     }
   };
 
-  if (!isOpen) return null;
+  if (!isInternalOpen) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => { }}>
-      <DialogContent className="sm:max-w-[425px] p-0 overflow-hidden border border-white/[0.08] shadow-2xl shadow-black/50 rounded-2xl [&>button]:hidden bg-[#111111]" onInteractOutside={(e) => e.preventDefault()}>
+    <Dialog open={isInternalOpen} onOpenChange={onOpenChange || (() => { })}>
+      <DialogContent className="sm:max-w-[425px] p-0 overflow-hidden border border-white/[0.08] shadow-2xl shadow-black/50 rounded-2xl bg-[#111111]" onInteractOutside={(e) => e.preventDefault()}>
+
 
         {/* Header with emerald gradient */}
         <div className="bg-gradient-to-br from-emerald-600 to-emerald-900 p-8 text-center relative overflow-hidden">

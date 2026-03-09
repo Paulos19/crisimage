@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Clock, DownloadCloud, Fingerprint, Eye, ArrowRight, ShieldCheck, HelpCircle, FileArchive, ActivitySquare, Sparkles, TrendingUp } from "lucide-react";
+import { Clock, DownloadCloud, Fingerprint, Eye, ArrowRight, ShieldCheck, HelpCircle, FileArchive, ActivitySquare, Sparkles, TrendingUp, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
@@ -53,14 +53,24 @@ export default async function DashboardPage() {
                         Acompanhe as métricas de entrega do seu estúdio.
                     </p>
                 </div>
-                <Link
-                    href="/dashboard/upload"
-                    className="group inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold bg-emerald-500 text-black rounded-full px-5 sm:px-6 py-3 hover:bg-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
-                >
-                    <DownloadCloud className="w-4 h-4 shrink-0" />
-                    Nova Compactação
-                    <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-0.5 transition-transform" />
-                </Link>
+                <div className="flex flex-wrap items-center gap-3">
+                    <Link
+                        href={`/portfolio/${session.user.id}`}
+                        target="_blank"
+                        className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold border border-white/[0.06] text-zinc-400 rounded-full px-5 sm:px-6 py-3 hover:bg-white/[0.04] hover:text-white transition-all duration-300"
+                    >
+                        <ExternalLink className="w-4 h-4 shrink-0" />
+                        Ver Portfólio
+                    </Link>
+                    <Link
+                        href="/dashboard/upload"
+                        className="group inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold bg-emerald-500 text-black rounded-full px-5 sm:px-6 py-3 hover:bg-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30"
+                    >
+                        <DownloadCloud className="w-4 h-4 shrink-0" />
+                        Nova Compactação
+                        <ArrowRight className="w-4 h-4 shrink-0 group-hover:translate-x-0.5 transition-transform" />
+                    </Link>
+                </div>
             </div>
 
             {/* Metric Cards */}

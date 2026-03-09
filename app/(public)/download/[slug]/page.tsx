@@ -15,9 +15,9 @@ export default async function DownloadPage({ params }: PageProps) {
   const { slug } = await params;
   const session = await auth();
 
-  if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=/download/${slug}`);
-  }
+  const { cookies, headers } = await import('next/headers');
+  const cookieStore = await cookies();
+  const guestWhatsapp = cookieStore.get('guest_whatsapp')?.value;
 
   const uploadSession = await prisma.uploadSession.findUnique({
     where: { slug },
@@ -88,15 +88,14 @@ export default async function DownloadPage({ params }: PageProps) {
     );
   }
 
-  const loggedInUser = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { whatsapp: true }
-  });
+  // Determinar se temos o WhatsApp (da sessão ou do cookie de visitante)
+  const userWhatsapp = session?.user?.id
+    ? (await prisma.user.findUnique({ where: { id: session.user.id }, select: { whatsapp: true } }))?.whatsapp
+    : guestWhatsapp;
 
-  const hasWhatsapp = !!loggedInUser?.whatsapp;
+  const hasWhatsapp = !!userWhatsapp;
 
   try {
-    const { headers } = await import('next/headers');
     const headersList = await headers();
     const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || "Desconhecido";
     const userAgent = headersList.get('user-agent') || "Desconhecido";
@@ -106,7 +105,7 @@ export default async function DownloadPage({ params }: PageProps) {
         uploadSessionId: uploadSession.id,
         ip: ip.split(',')[0].trim(),
         userAgent: userAgent.substring(0, 190),
-        whatsapp: loggedInUser?.whatsapp || null,
+        whatsapp: userWhatsapp || null,
       }
     });
   } catch (error) {
@@ -117,9 +116,9 @@ export default async function DownloadPage({ params }: PageProps) {
 
   return (
     <>
-      <WhatsAppModal isOpen={!hasWhatsapp} />
+      <WhatsAppModal />
 
-      <div className={`min-h-screen bg-[#080808] selection:bg-emerald-500/30 ${!hasWhatsapp ? "blur-md pointer-events-none select-none h-screen overflow-hidden" : ""}`}>
+      <div className="min-h-screen bg-[#080808] selection:bg-emerald-500/30">
 
         {/* Cinematic Header */}
         <div className="relative h-[40vh] min-h-[300px] w-full bg-[#0a0a0a] flex items-center justify-center overflow-hidden">
@@ -159,6 +158,7 @@ export default async function DownloadPage({ params }: PageProps) {
             <DownloadActions
               link={`${process.env.NEXTAUTH_URL}/download/${slug}`}
               title={uploadSession.title || "Imagens"}
+              hasWhatsapp={hasWhatsapp}
             />
           </div>
         </div>
