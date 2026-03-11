@@ -45,11 +45,11 @@ export default async function DashboardPage() {
                 <div>
                     <div className="flex items-center gap-2 mb-2">
                         <div className="h-px w-8 bg-gradient-to-r from-emerald-500 to-transparent" />
-                        <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-emerald-400">
+                        <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-emerald-600 dark:text-emerald-400">
                             // Dashboard
                         </span>
                     </div>
-                    <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-white uppercase">Visão Geral</h2>
+                    <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-zinc-900 dark:text-white uppercase">Visão Geral</h2>
                     <p className="text-[10px] sm:text-sm text-zinc-500 mt-1 font-medium uppercase tracking-wider">
                         Acompanhe as métricas de entrega do seu estúdio.
                     </p>
@@ -58,7 +58,7 @@ export default async function DashboardPage() {
                     <Link
                         href={`/portfolio/${session.user.id}`}
                         target="_blank"
-                        className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold border border-white/[0.06] text-zinc-400 rounded-full px-5 sm:px-6 py-3 hover:bg-white/[0.04] hover:text-white transition-all duration-300"
+                        className="inline-flex items-center justify-center gap-2 text-xs sm:text-sm font-bold border border-zinc-200 dark:border-white/[0.06] text-zinc-500 dark:text-zinc-400 rounded-full px-5 sm:px-6 py-3 hover:bg-zinc-100 dark:hover:bg-white/[0.04] hover:text-zinc-700 dark:hover:text-white transition-all duration-300"
                     >
                         <ExternalLink className="w-4 h-4 shrink-0" />
                         Ver Portfólio
@@ -77,88 +77,88 @@ export default async function DashboardPage() {
             {/* Metric Cards */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {/* Card 1: Active Packages */}
-                <div className="group relative bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 hover:bg-white/[0.04] hover:border-emerald-500/10 transition-all duration-500 overflow-hidden">
+                <div className="group relative bg-white dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.06] rounded-2xl p-6 hover:border-emerald-500/20 dark:hover:border-emerald-500/10 transition-all duration-500 overflow-hidden shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none">
                     <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute top-4 right-4 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity">
+                    <div className="absolute top-4 right-4 opacity-[0.06] dark:opacity-[0.04] group-hover:opacity-[0.12] dark:group-hover:opacity-[0.08] transition-opacity">
                         <FileArchive className="w-20 h-20 text-emerald-500" />
                     </div>
                     <div className="flex items-center justify-between mb-4">
                         <span className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">Pacotes Ativos</span>
                         <div className="h-9 w-9 bg-emerald-500/10 rounded-xl flex items-center justify-center">
-                            <FileArchive className="h-4 w-4 text-emerald-400" />
+                            <FileArchive className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                         </div>
                     </div>
-                    <div className="text-4xl font-black text-white mb-1">{totalActiveUploads}</div>
-                    <p className="text-xs text-zinc-600 font-medium flex items-center gap-1.5">
+                    <div className="text-4xl font-black text-zinc-900 dark:text-white mb-1">{totalActiveUploads}</div>
+                    <p className="text-xs text-zinc-400 dark:text-zinc-600 font-medium flex items-center gap-1.5">
                         <Clock className="w-3 h-3" /> expirando em até 5 dias
                     </p>
                 </div>
 
                 {/* Card 2: Total Accesses */}
-                <div className="group relative bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 hover:bg-white/[0.04] hover:border-emerald-500/10 transition-all duration-500 overflow-hidden">
+                <div className="group relative bg-white dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.06] rounded-2xl p-6 hover:border-emerald-500/20 dark:hover:border-emerald-500/10 transition-all duration-500 overflow-hidden shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none">
                     <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute top-4 right-4 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity">
+                    <div className="absolute top-4 right-4 opacity-[0.06] dark:opacity-[0.04] group-hover:opacity-[0.12] dark:group-hover:opacity-[0.08] transition-opacity">
                         <Eye className="w-20 h-20 text-emerald-500" />
                     </div>
                     <div className="flex items-center justify-between mb-4">
                         <span className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">Cliques (Acessos)</span>
                         <div className="h-9 w-9 bg-emerald-500/10 rounded-xl flex items-center justify-center">
-                            <ActivitySquare className="h-4 w-4 text-emerald-400" />
+                            <ActivitySquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                         </div>
                     </div>
-                    <div className="text-4xl font-black text-white mb-1">{totalAccesses}</div>
-                    <p className="text-xs text-zinc-600 font-medium">
+                    <div className="text-4xl font-black text-zinc-900 dark:text-white mb-1">{totalAccesses}</div>
+                    <p className="text-xs text-zinc-400 dark:text-zinc-600 font-medium">
                         Visitas de clientes em seus links gerados.
                     </p>
                 </div>
 
                 {/* Card 3: Performance indicator */}
-                <div className="group relative bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 hover:bg-white/[0.04] hover:border-emerald-500/10 transition-all duration-500 overflow-hidden">
+                <div className="group relative bg-white dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.06] rounded-2xl p-6 hover:border-emerald-500/20 dark:hover:border-emerald-500/10 transition-all duration-500 overflow-hidden shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-none">
                     <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute top-4 right-4 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity">
+                    <div className="absolute top-4 right-4 opacity-[0.06] dark:opacity-[0.04] group-hover:opacity-[0.12] dark:group-hover:opacity-[0.08] transition-opacity">
                         <TrendingUp className="w-20 h-20 text-emerald-500" />
                     </div>
                     <div className="flex items-center justify-between mb-4">
                         <span className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">Taxa de Entrega</span>
                         <div className="h-9 w-9 bg-emerald-500/10 rounded-xl flex items-center justify-center">
-                            <TrendingUp className="h-4 w-4 text-emerald-400" />
+                            <TrendingUp className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                         </div>
                     </div>
-                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-emerald-600 mb-1">100%</div>
-                    <p className="text-xs text-zinc-600 font-medium flex items-center gap-1.5">
+                    <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 dark:from-emerald-300 to-emerald-600 mb-1">100%</div>
+                    <p className="text-xs text-zinc-400 dark:text-zinc-600 font-medium flex items-center gap-1.5">
                         <Sparkles className="w-3 h-3 text-emerald-500" /> Entrega perfeita garantida
                     </p>
                 </div>
             </div>
 
             {/* Recent Uploads Table */}
-            <div className="relative bg-white/[0.02] border border-white/[0.06] rounded-2xl overflow-hidden">
+            <div className="relative bg-white dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.06] rounded-2xl overflow-hidden shadow-sm dark:shadow-none">
                 {/* Table header */}
-                <div className="px-6 py-5 border-b border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="px-6 py-5 border-b border-zinc-100 dark:border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h3 className="text-lg font-black uppercase tracking-tight text-white flex items-center gap-2">
-                            <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                        <h3 className="text-lg font-black uppercase tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                            <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                             Acesso Rápido a Códigos
                         </h3>
-                        <p className="text-xs text-zinc-600 font-medium mt-1 uppercase tracking-wider">
+                        <p className="text-xs text-zinc-400 dark:text-zinc-600 font-medium mt-1 uppercase tracking-wider">
                             Copie a senha dos seus 5 últimos envios ativos
                         </p>
                     </div>
                     <Link
                         href="/dashboard/uploads"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors uppercase tracking-wider"
                     >
                         Ver Todos <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                 </div>
 
                 {recentUploads.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center py-20 text-zinc-600">
+                    <div className="flex flex-col items-center justify-center py-20 text-zinc-400 dark:text-zinc-600">
                         <HelpCircle className="h-10 w-10 mb-3 opacity-20" />
                         <p className="font-bold uppercase tracking-wide text-sm">Você ainda não tem pacotes ativos.</p>
                         <Link
                             href="/dashboard/upload"
-                            className="mt-3 text-sm font-bold text-emerald-400 hover:text-emerald-300 transition-colors"
+                            className="mt-3 text-sm font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors"
                         >
                             Fazer o primeiro upload →
                         </Link>
@@ -167,33 +167,33 @@ export default async function DashboardPage() {
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left min-w-[600px]">
                             <thead>
-                                <tr className="border-b border-white/[0.04]">
-                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Galeria</th>
-                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Criação</th>
-                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Expiração</th>
-                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Chave de Liberação</th>
-                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600 text-right">Ações</th>
+                                <tr className="border-b border-zinc-100 dark:border-white/[0.04]">
+                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-600">Galeria</th>
+                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-600">Criação</th>
+                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-600">Expiração</th>
+                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-600">Chave de Liberação</th>
+                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-600 text-right">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-white/[0.04]">
+                            <tbody className="divide-y divide-zinc-100 dark:divide-white/[0.04]">
                                 {recentUploads.map((upload) => (
-                                    <tr key={upload.id} className="hover:bg-white/[0.02] transition-colors group">
-                                        <td className="px-6 py-4 font-bold text-white">
+                                    <tr key={upload.id} className="hover:bg-zinc-50 dark:hover:bg-white/[0.02] transition-colors group">
+                                        <td className="px-6 py-4 font-bold text-zinc-900 dark:text-white">
                                             {upload.title || "Pacote de Imagens"}
                                         </td>
                                         <td className="px-6 py-4 text-zinc-500">
                                             {format(new Date(upload.createdAt), "dd MMM, HH:mm", { locale: ptBR })}
                                         </td>
-                                        <td className="px-6 py-4 text-amber-500 font-medium">
+                                        <td className="px-6 py-4 text-amber-600 dark:text-amber-500 font-medium">
                                             {format(new Date(upload.expiresAt), "dd MMM, HH:mm", { locale: ptBR })}
                                         </td>
                                         <td className="px-6 py-4">
                                             {upload.accessKey ? (
-                                                <span className="inline-flex font-mono bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-emerald-400 tracking-wider font-bold text-xs select-all">
+                                                <span className="inline-flex font-mono bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-emerald-600 dark:text-emerald-400 tracking-wider font-bold text-xs select-all">
                                                     {upload.accessKey}
                                                 </span>
                                             ) : (
-                                                <span className="text-zinc-700 italic text-xs">Sem proteção</span>
+                                                <span className="text-zinc-400 dark:text-zinc-700 italic text-xs">Sem proteção</span>
                                             )}
                                         </td>
                                         <td className="px-6 py-4 text-right">

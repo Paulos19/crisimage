@@ -1,5 +1,4 @@
 "use client";
-// Force TS server reload
 
 import { useState } from "react";
 import Link from "next/link";
@@ -32,7 +31,7 @@ export function UploadItemActions({ uploadId, link, title, slug }: UploadItemAct
             <button
                 onClick={() => setIsModalOpen(true)}
                 title="Enviar p/ WhatsApp"
-                className="h-8 w-8 flex items-center justify-center text-zinc-600 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-full transition-all"
+                className="h-8 w-8 flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-500/10 rounded-full transition-all"
             >
                 <MessageCircle className="h-4 w-4" />
             </button>
@@ -41,7 +40,7 @@ export function UploadItemActions({ uploadId, link, title, slug }: UploadItemAct
                 href={`/download/${slug}`}
                 target="_blank"
                 title="Ver Galeria"
-                className="h-8 w-8 flex items-center justify-center text-zinc-600 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-full transition-all"
+                className="h-8 w-8 flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-500/10 rounded-full transition-all"
             >
                 <ExternalLink className="h-4 w-4" />
             </Link>

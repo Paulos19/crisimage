@@ -173,32 +173,54 @@ html {
 /* CUSTOM SCROLLBAR — Dark/Green  */
 /* ============================== */
 
-/* Webkit (Chrome, Edge, Safari) */
+/* Webkit (Chrome, Edge, Safari) — Light Mode */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: #f4f4f5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #065f46, #10b981, #065f46);
+  background: linear-gradient(180deg, #a7f3d0, #6ee7b7, #a7f3d0);
   border-radius: 9999px;
-  border: 2px solid #0a0a0a;
+  border: 2px solid #f4f4f5;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #059669, #34d399, #059669);
+  background: linear-gradient(180deg, #6ee7b7, #34d399, #6ee7b7);
 }
 
 ::-webkit-scrollbar-thumb:active {
   background: #34d399;
 }
 
-/* Firefox */
+/* Webkit — Dark Mode */
+.dark ::-webkit-scrollbar-track,
+.dark::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+.dark ::-webkit-scrollbar-thumb,
+.dark::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #065f46, #10b981, #065f46);
+  border-color: #0a0a0a;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover,
+.dark::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #059669, #34d399, #059669);
+}
+
+/* Firefox — Light */
 * {
   scrollbar-width: thin;
+  scrollbar-color: #6ee7b7 #f4f4f5;
+}
+
+/* Firefox — Dark */
+.dark * {
   scrollbar-color: #10b981 #0a0a0a;
 }
 

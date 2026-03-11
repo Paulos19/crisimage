@@ -25,7 +25,7 @@ export async function RecentUploads() {
 
   if (uploads.length === 0) {
     return (
-      <div className="text-center py-10 text-zinc-600 text-sm font-bold uppercase tracking-wider">
+      <div className="text-center py-10 text-zinc-400 dark:text-zinc-600 text-sm font-bold uppercase tracking-wider">
         Nenhum upload ativo no momento.
       </div>
     );
@@ -37,21 +37,21 @@ export async function RecentUploads() {
         const link = `${process.env.NEXTAUTH_URL}/download/${upload.slug}`;
 
         return (
-          <div key={upload.id} className="group flex items-center justify-between p-4 border border-white/[0.06] rounded-xl bg-white/[0.02] hover:bg-white/[0.04] hover:border-emerald-500/10 transition-all duration-300 relative overflow-hidden">
+          <div key={upload.id} className="group flex items-center justify-between p-4 border border-zinc-200 dark:border-white/[0.06] rounded-xl bg-zinc-50 dark:bg-white/[0.02] hover:bg-zinc-100 dark:hover:bg-white/[0.04] hover:border-emerald-500/20 dark:hover:border-emerald-500/10 transition-all duration-300 relative overflow-hidden">
             {/* Active indicator on hover */}
             <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-gradient-to-b from-emerald-500 to-emerald-700 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-full" />
 
             <div className="flex flex-col gap-1 min-w-0 z-10 pl-2">
               <div className="flex items-center gap-3">
-                <span className="font-bold text-white truncate max-w-[150px] sm:max-w-xs" title={upload.title || "Sem título"}>
+                <span className="font-bold text-zinc-900 dark:text-white truncate max-w-[150px] sm:max-w-xs" title={upload.title || "Sem título"}>
                   {upload.title || "Sem título"}
                 </span>
-                <span className="flex items-center gap-1.5 text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-500/20 uppercase tracking-wider">
+                <span className="flex items-center gap-1.5 text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full font-bold border border-emerald-500/20 uppercase tracking-wider">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Ativo
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-xs text-zinc-600 mt-0.5 font-medium">
+              <div className="flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-600 mt-0.5 font-medium">
                 <Clock className="h-3.5 w-3.5" />
                 <span>Expira {formatDistanceToNow(upload.expiresAt, { addSuffix: true, locale: ptBR })}</span>
               </div>

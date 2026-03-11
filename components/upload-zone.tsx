@@ -209,28 +209,28 @@ export function UploadZone() {
       <div className="flex flex-col items-center space-y-6 text-center py-4">
         <div className="space-y-2">
           <div className="mx-auto w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center mb-4 border border-emerald-500/20">
-            <Sparkles className="h-8 w-8 text-emerald-400" />
+            <Sparkles className="h-8 w-8 text-emerald-500 dark:text-emerald-400" />
           </div>
-          <h3 className="text-2xl font-black text-emerald-400 uppercase tracking-tight">Arquivo Pronto!</h3>
+          <h3 className="text-2xl font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-tight">Arquivo Pronto!</h3>
           <p className="text-sm text-zinc-500 font-medium">Envie o link para seu cliente baixar as fotos.</p>
         </div>
 
-        <div className="p-5 bg-white/[0.03] border border-white/[0.08] rounded-2xl">
-          <QRCodeSVG value={successData.link} size={180} bgColor="transparent" fgColor="#34d399" />
+        <div className="p-5 bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/[0.08] rounded-2xl">
+          <QRCodeSVG value={successData.link} size={180} bgColor="transparent" fgColor="#059669" />
         </div>
 
         <div className="flex w-full max-w-sm flex-col space-y-4">
           <div className="space-y-1.5 text-left">
-            <Label className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Link do Cliente</Label>
+            <Label className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-600">Link do Cliente</Label>
             <div className="flex w-full items-center space-x-2">
               <Input
                 value={successData.link}
                 readOnly
-                className="text-center bg-white/[0.03] border-white/[0.08] text-emerald-400 font-mono text-xs rounded-xl h-11"
+                className="text-center bg-zinc-50 dark:bg-white/[0.03] border-zinc-200 dark:border-white/[0.08] text-emerald-600 dark:text-emerald-400 font-mono text-xs rounded-xl h-11"
               />
               <button
                 onClick={() => copyToClipboard(successData.link)}
-                className="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all"
+                className="h-11 w-11 shrink-0 flex items-center justify-center rounded-xl border border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-white/[0.03] hover:bg-emerald-500/10 hover:border-emerald-500/20 transition-all"
               >
                 {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4 text-zinc-500" />}
               </button>
@@ -280,7 +280,7 @@ export function UploadZone() {
   return (
     <div className="space-y-6">
       <div className="grid w-full items-center gap-2">
-        <Label htmlFor="title" className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+        <Label htmlFor="title" className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
           Título da Galeria
         </Label>
         <Input
@@ -289,7 +289,7 @@ export function UploadZone() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           disabled={status !== "IDLE"}
-          className="h-12 bg-white/[0.03] border-white/[0.08] text-white placeholder:text-zinc-600 rounded-xl focus:border-emerald-500/40 focus:ring-emerald-500/20 text-base transition-all"
+          className="h-12 bg-zinc-50 dark:bg-white/[0.03] border-zinc-200 dark:border-white/[0.08] text-zinc-900 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-600 rounded-xl focus:border-emerald-500/40 focus:ring-emerald-500/20 text-base transition-all"
         />
       </div>
 
@@ -297,21 +297,21 @@ export function UploadZone() {
         {...getRootProps()}
         className={`
           relative overflow-hidden border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-300 group
-          ${isDragActive ? "border-emerald-500 bg-emerald-500/5 scale-[1.02]" : "border-white/[0.08] hover:border-emerald-500/30 hover:bg-white/[0.02]"}
+          ${isDragActive ? "border-emerald-500 bg-emerald-500/5 scale-[1.02]" : "border-zinc-300 dark:border-white/[0.08] hover:border-emerald-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.02]"}
           ${status !== "IDLE" ? "opacity-50 pointer-events-none" : ""}
         `}
       >
         <input {...getInputProps()} />
         <div className="flex flex-col items-center gap-4 relative z-10">
-          <div className={`p-4 rounded-full transition-colors duration-300 ${isDragActive ? "bg-emerald-500/20 text-emerald-400" : "bg-white/[0.04] text-zinc-600 group-hover:bg-emerald-500/10 group-hover:text-emerald-400"}`}>
+          <div className={`p-4 rounded-full transition-colors duration-300 ${isDragActive ? "bg-emerald-500/20 text-emerald-500" : "bg-zinc-100 dark:bg-white/[0.04] text-zinc-400 dark:text-zinc-600 group-hover:bg-emerald-500/10 group-hover:text-emerald-500 dark:group-hover:text-emerald-400"}`}>
             <UploadCloud className="h-8 w-8" />
           </div>
-          <p className="text-sm font-bold text-white uppercase tracking-wide">
+          <p className="text-sm font-bold text-zinc-700 dark:text-white uppercase tracking-wide">
             {isDragActive
               ? "Solte as imagens aqui!"
               : "Arraste imagens ou clique para selecionar"}
           </p>
-          <p className="text-xs text-zinc-600 font-medium">
+          <p className="text-xs text-zinc-400 dark:text-zinc-600 font-medium">
             Máximo de 50 fotos. Formatos suportados: JPG, PNG, WEBP.
           </p>
         </div>
@@ -321,10 +321,10 @@ export function UploadZone() {
       </div>
 
       {files.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-40 overflow-y-auto p-2 border border-white/[0.06] rounded-xl bg-white/[0.02]">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-40 overflow-y-auto p-2 border border-zinc-200 dark:border-white/[0.06] rounded-xl bg-zinc-50 dark:bg-white/[0.02]">
           {files.map((file, i) => (
-            <div key={i} className="relative group bg-white/[0.04] border border-white/[0.06] p-2 rounded-lg flex items-center gap-2 text-xs truncate text-zinc-400">
-              <FileIcon className="h-4 w-4 shrink-0 text-zinc-600" />
+            <div key={i} className="relative group bg-white dark:bg-white/[0.04] border border-zinc-200 dark:border-white/[0.06] p-2 rounded-lg flex items-center gap-2 text-xs truncate text-zinc-500 dark:text-zinc-400">
+              <FileIcon className="h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-600" />
               <span className="truncate flex-1">{file.name}</span>
               <button
                 onClick={(e) => { e.stopPropagation(); removeFile(i); }}
@@ -338,15 +338,15 @@ export function UploadZone() {
         </div>
       )}
 
-      <div className="p-5 bg-white/[0.02] border border-white/[0.06] rounded-xl flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between transition-all hover:border-amber-500/20">
+      <div className="p-5 bg-zinc-50 dark:bg-white/[0.02] border border-zinc-200 dark:border-white/[0.06] rounded-xl flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between transition-all hover:border-amber-500/20">
         <div className="space-y-1.5 flex-1">
-          <Label className="flex items-center gap-2 text-sm font-bold text-white">
+          <Label className="flex items-center gap-2 text-sm font-bold text-zinc-800 dark:text-white">
             <div className="bg-amber-500/10 p-1.5 rounded-lg border border-amber-500/20">
               <Shield className="h-4 w-4 text-amber-500" />
             </div>
-            Proteção com Marca D&apos;água <span className="text-xs font-normal text-zinc-600 ml-1">(Opcional)</span>
+            Proteção com Marca D&apos;água <span className="text-xs font-normal text-zinc-400 dark:text-zinc-600 ml-1">(Opcional)</span>
           </Label>
-          <p className="text-[11px] text-zinc-600 md:w-[90%] leading-relaxed">
+          <p className="text-[11px] text-zinc-500 dark:text-zinc-600 md:w-[90%] leading-relaxed">
             Selecione uma imagem (.png) transparente para proteger suas fotos. O cliente precisará de uma chave de acesso para o pacote original.
           </p>
           <input
@@ -360,11 +360,11 @@ export function UploadZone() {
         </div>
 
         {watermarkFile ? (
-          <div className="flex items-center gap-3 bg-white/[0.03] border border-white/[0.08] p-3 rounded-xl shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
-            <div className="h-8 w-8 bg-white/[0.04] rounded-md flex items-center justify-center">
+          <div className="flex items-center gap-3 bg-zinc-50 dark:bg-white/[0.03] border border-zinc-200 dark:border-white/[0.08] p-3 rounded-xl shrink-0 w-full sm:w-auto mt-2 sm:mt-0">
+            <div className="h-8 w-8 bg-zinc-100 dark:bg-white/[0.04] rounded-md flex items-center justify-center">
               <ImagePlus className="h-4 w-4 text-zinc-500" />
             </div>
-            <span className="truncate max-w-[120px] text-sm font-medium text-white" title={watermarkFile.name}>{watermarkFile.name}</span>
+            <span className="truncate max-w-[120px] text-sm font-medium text-zinc-800 dark:text-white" title={watermarkFile.name}>{watermarkFile.name}</span>
             <button
               onClick={() => setWatermarkFile(null)}
               disabled={status !== "IDLE"}
@@ -377,7 +377,7 @@ export function UploadZone() {
           <button
             onClick={() => watermarkInputRef.current?.click()}
             disabled={status !== "IDLE"}
-            className="shrink-0 w-full sm:w-auto h-10 px-4 rounded-xl text-sm font-bold border border-white/[0.08] bg-white/[0.03] text-zinc-400 hover:bg-white/[0.05] hover:text-white hover:border-emerald-500/20 transition-all inline-flex items-center justify-center gap-2"
+            className="shrink-0 w-full sm:w-auto h-10 px-4 rounded-xl text-sm font-bold border border-zinc-200 dark:border-white/[0.08] bg-zinc-50 dark:bg-white/[0.03] text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-white/[0.05] hover:text-zinc-700 dark:hover:text-white hover:border-emerald-500/20 transition-all inline-flex items-center justify-center gap-2"
           >
             <ImagePlus className="h-4 w-4" /> Selecionar Logo
           </button>
@@ -393,9 +393,9 @@ export function UploadZone() {
               {status === "UPLOADING" && "Enviando para nuvem..."}
               {status === "SAVING" && "Finalizando link..."}
             </span>
-            <span className="text-emerald-400">{progress.toFixed(0)}%</span>
+            <span className="text-emerald-600 dark:text-emerald-400">{progress.toFixed(0)}%</span>
           </div>
-          <div className="w-full h-2 bg-white/[0.04] rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-zinc-200 dark:bg-white/[0.04] rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}

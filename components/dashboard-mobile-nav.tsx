@@ -32,17 +32,17 @@ export function DashboardMobileNav() {
             {/* Mobile Hamburger Toggle */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-white/[0.05] transition-colors"
+                className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.05] transition-colors"
                 aria-label="Open menu"
             >
-                <Menu className="w-5 h-5 text-white" />
+                <Menu className="w-5 h-5 text-zinc-700 dark:text-white" />
             </button>
 
             {/* Mobile Sidebar Overlay/Drawer - rendered in portal */}
             {mounted && typeof document !== "undefined" && createPortal(
                 <div
                     className={cn(
-                        "fixed inset-0 z-[100] bg-[#0a0a0a]/80 backdrop-blur-sm transition-opacity duration-300 pointer-events-none",
+                        "fixed inset-0 z-[100] bg-black/30 dark:bg-[#0a0a0a]/80 backdrop-blur-sm transition-opacity duration-300 pointer-events-none",
                         isOpen ? "opacity-100 pointer-events-auto" : "opacity-0"
                     )}
                 >
@@ -55,36 +55,36 @@ export function DashboardMobileNav() {
                     {/* Drawer Panel */}
                     <div
                         className={cn(
-                            "absolute top-0 left-0 h-full w-72 bg-[#0a0a0a] border-r border-white/[0.06] shadow-2xl flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                            "absolute top-0 left-0 h-full w-72 bg-white dark:bg-[#0a0a0a] border-r border-zinc-200 dark:border-white/[0.06] shadow-2xl flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
                             isOpen ? "translate-x-0" : "-translate-x-full"
                         )}
                     >
                         {/* Header */}
-                        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/[0.04]">
+                        <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-zinc-100 dark:border-white/[0.04]">
                             <Link href="/dashboard" className="flex items-center gap-3 group" onClick={() => setIsOpen(false)}>
                                 <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md">
                                     <Sparkles className="h-4 w-4 text-white" />
                                 </div>
                                 <div>
-                                    <h2 className="text-base font-black tracking-tight text-white uppercase leading-none">
+                                    <h2 className="text-base font-black tracking-tight text-zinc-900 dark:text-white uppercase leading-none">
                                         LetImage
                                     </h2>
-                                    <p className="text-[9px] text-zinc-500 font-bold uppercase tracking-[0.2em] mt-0.5">
+                                    <p className="text-[9px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-[0.2em] mt-0.5">
                                         Painel Studio
                                     </p>
                                 </div>
                             </Link>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="p-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+                                className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-white/[0.05] transition-colors"
                             >
-                                <X className="w-5 h-5 text-zinc-400 hover:text-white" />
+                                <X className="w-5 h-5 text-zinc-400 hover:text-zinc-700 dark:hover:text-white" />
                             </button>
                         </div>
 
                         {/* Navigation Links */}
                         <nav className="flex-1 overflow-y-auto px-4 py-8 space-y-2">
-                            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 px-4 mb-4">
+                            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-400 dark:text-zinc-600 px-4 mb-4">
                                 // Menu Principal
                             </p>
                             {sidebarItems.map((item) => {
@@ -96,14 +96,14 @@ export function DashboardMobileNav() {
                                             className={cn(
                                                 "flex items-center gap-3.5 px-4 py-3.5 rounded-xl transition-colors",
                                                 isActive
-                                                    ? "bg-emerald-500/10 text-emerald-400 font-bold"
-                                                    : "text-zinc-500 hover:bg-white/[0.03] hover:text-zinc-300 active:bg-white/[0.08] active:text-white font-medium"
+                                                    ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold"
+                                                    : "text-zinc-500 hover:bg-zinc-100 dark:hover:bg-white/[0.03] hover:text-zinc-700 dark:hover:text-zinc-300 active:bg-zinc-200 dark:active:bg-white/[0.08] active:text-zinc-900 dark:active:text-white font-medium"
                                             )}
                                         >
                                             <item.icon
                                                 className={cn(
                                                     "h-5 w-5",
-                                                    isActive ? "text-emerald-400" : "text-zinc-600"
+                                                    isActive ? "text-emerald-600 dark:text-emerald-400" : "text-zinc-400 dark:text-zinc-600"
                                                 )}
                                             />
                                             <span className="text-sm tracking-wide">{item.label}</span>
@@ -114,16 +114,16 @@ export function DashboardMobileNav() {
                         </nav>
 
                         {/* Bottom Area */}
-                        <div className="p-4 border-t border-white/[0.06]">
+                        <div className="p-4 border-t border-zinc-200 dark:border-white/[0.06]">
                             <Link href="/dashboard" onClick={() => setIsOpen(false)}>
-                                <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-zinc-500 hover:bg-white/[0.03] hover:text-zinc-300 active:bg-white/[0.08] active:text-white transition-colors font-medium">
-                                    <Settings className="h-5 w-5 text-zinc-600" />
+                                <div className="flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-zinc-500 hover:bg-zinc-100 dark:hover:bg-white/[0.03] hover:text-zinc-700 dark:hover:text-zinc-300 active:bg-zinc-200 dark:active:bg-white/[0.08] active:text-zinc-900 dark:active:text-white transition-colors font-medium">
+                                    <Settings className="h-5 w-5 text-zinc-400 dark:text-zinc-600" />
                                     <span className="text-sm tracking-wide">Configurações</span>
                                 </div>
                             </Link>
 
                             <div className="px-4 mt-4 mb-2 flex items-center justify-between">
-                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-700">LetImage Studio</span>
+                                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 dark:text-zinc-700">LetImage Studio</span>
                                 <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-emerald-500/50">v1.0</span>
                             </div>
                         </div>

@@ -22,10 +22,10 @@ export function DashboardSidebar() {
     const pathname = usePathname();
 
     return (
-        <div className="w-72 flex-shrink-0 h-full bg-[#0a0a0a] border-r border-white/[0.06] hidden md:flex flex-col relative overflow-hidden">
-            {/* Ambient glow */}
-            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-emerald-900/[0.08] rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 right-0 w-[200px] h-[200px] bg-teal-900/[0.05] rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+        <div className="w-72 flex-shrink-0 h-full bg-white dark:bg-[#0a0a0a] border-r border-zinc-200 dark:border-white/[0.06] hidden md:flex flex-col relative overflow-hidden">
+            {/* Ambient glow — dark only */}
+            <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-emerald-900/[0.08] rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2 hidden dark:block" />
+            <div className="absolute bottom-0 right-0 w-[200px] h-[200px] bg-teal-900/[0.05] rounded-full blur-[100px] pointer-events-none translate-x-1/2 translate-y-1/2 hidden dark:block" />
 
             {/* Logo */}
             <div className="relative z-10 px-7 pt-8 pb-6">
@@ -34,10 +34,10 @@ export function DashboardSidebar() {
                         <Sparkles className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                        <h2 className="text-lg font-black tracking-tight text-white uppercase">
+                        <h2 className="text-lg font-black tracking-tight text-zinc-900 dark:text-white uppercase">
                             LetImage
                         </h2>
-                        <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.25em]">
+                        <p className="text-[10px] text-zinc-400 dark:text-zinc-600 font-bold uppercase tracking-[0.25em]">
                             Painel Studio
                         </p>
                     </div>
@@ -45,11 +45,11 @@ export function DashboardSidebar() {
             </div>
 
             {/* Divider */}
-            <div className="mx-7 h-px bg-gradient-to-r from-emerald-500/20 via-white/[0.06] to-transparent" />
+            <div className="mx-7 h-px bg-gradient-to-r from-emerald-500/20 via-zinc-200 dark:via-white/[0.06] to-transparent" />
 
             {/* Navigation */}
             <nav className="relative z-10 flex-1 px-4 space-y-1 mt-6">
-                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-600 px-4 mb-3">
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-400 dark:text-zinc-600 px-4 mb-3">
                     // Menu
                 </p>
                 {sidebarItems.map((item) => {
@@ -61,8 +61,8 @@ export function DashboardSidebar() {
                                 className={cn(
                                     "flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-300 group cursor-pointer relative overflow-hidden",
                                     isActive
-                                        ? "bg-emerald-500/10 text-emerald-400 font-bold"
-                                        : "text-zinc-500 hover:bg-white/[0.03] hover:text-zinc-300 font-medium"
+                                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold"
+                                        : "text-zinc-500 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-white/[0.03] hover:text-zinc-700 dark:hover:text-zinc-300 font-medium"
                                 )}
                             >
                                 {/* Active indicator line */}
@@ -74,15 +74,15 @@ export function DashboardSidebar() {
                                     className={cn(
                                         "h-5 w-5 transition-all duration-300",
                                         isActive
-                                            ? "text-emerald-400"
-                                            : "text-zinc-600 group-hover:text-zinc-400"
+                                            ? "text-emerald-600 dark:text-emerald-400"
+                                            : "text-zinc-400 dark:text-zinc-600 group-hover:text-zinc-600 dark:group-hover:text-zinc-400"
                                     )}
                                 />
                                 <span className="text-sm tracking-wide">{item.label}</span>
 
-                                {/* Active glow */}
+                                {/* Active glow — dark only */}
                                 {isActive && (
-                                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 h-8 bg-emerald-500/10 blur-xl pointer-events-none" />
+                                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 h-8 bg-emerald-500/10 blur-xl pointer-events-none hidden dark:block" />
                                 )}
                             </div>
                         </Link>
@@ -91,9 +91,9 @@ export function DashboardSidebar() {
             </nav>
 
             {/* Bottom section */}
-            <div className="relative z-10 p-4 border-t border-white/[0.06]">
+            <div className="relative z-10 p-4 border-t border-zinc-200 dark:border-white/[0.06]">
                 <Link href="/dashboard">
-                    <div className="flex items-center gap-3.5 px-4 py-3 rounded-xl text-zinc-600 hover:bg-white/[0.03] hover:text-zinc-400 cursor-pointer transition-all duration-300 font-medium">
+                    <div className="flex items-center gap-3.5 px-4 py-3 rounded-xl text-zinc-400 dark:text-zinc-600 hover:bg-zinc-100 dark:hover:bg-white/[0.03] hover:text-zinc-600 dark:hover:text-zinc-400 cursor-pointer transition-all duration-300 font-medium">
                         <Settings className="h-5 w-5" />
                         <span className="text-sm tracking-wide">Configurações</span>
                     </div>
@@ -103,7 +103,7 @@ export function DashboardSidebar() {
                 <div className="px-4 mt-3">
                     <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span className="text-[10px] text-zinc-700 font-medium uppercase tracking-wider">
+                        <span className="text-[10px] text-zinc-400 dark:text-zinc-700 font-medium uppercase tracking-wider">
                             v1.0 — Online
                         </span>
                     </div>
