@@ -2,9 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Clock, ExternalLink } from "lucide-react";
-import Link from "next/link";
-import { CopyButton } from "./copy-button";
+import { Clock } from "lucide-react";
 import { UploadItemActions } from "./upload-item-actions";
 
 export async function RecentUploads() {

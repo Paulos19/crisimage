@@ -17,7 +17,7 @@ export function DownloadActions({ link, title, hasWhatsapp }: { link: string, ti
         }
 
         setLoading(true);
-        const res = await sendWhatsappNotification(link, title);
+        const res = await sendWhatsappNotification(link, title, "");
 
         if (res.success) {
             setSent(true);
