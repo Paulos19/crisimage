@@ -15,7 +15,7 @@ export function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="h-8 w-8 flex items-center justify-center text-zinc-600 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-full transition-all"
+      className="h-8 w-8 flex items-center justify-center text-zinc-400 dark:text-zinc-600 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-500/10 rounded-full transition-all"
     >
       {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
     </button>
