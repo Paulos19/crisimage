@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Clock, DownloadCloud, Fingerprint, Eye, ArrowRight, ShieldCheck, HelpCircle, FileArchive, ActivitySquare, Sparkles, TrendingUp, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { UploadItemActions } from "@/components/upload-item-actions";
 
 export const metadata = {
     title: "Visão Geral - LetImage",
@@ -170,7 +171,8 @@ export default async function DashboardPage() {
                                     <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Galeria</th>
                                     <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Criação</th>
                                     <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Expiração</th>
-                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600 text-right">Chave de Liberação</th>
+                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">Chave de Liberação</th>
+                                    <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600 text-right">Ações</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/[0.04]">
@@ -185,7 +187,7 @@ export default async function DashboardPage() {
                                         <td className="px-6 py-4 text-amber-500 font-medium">
                                             {format(new Date(upload.expiresAt), "dd MMM, HH:mm", { locale: ptBR })}
                                         </td>
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="px-6 py-4">
                                             {upload.accessKey ? (
                                                 <span className="inline-flex font-mono bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-emerald-400 tracking-wider font-bold text-xs select-all">
                                                     {upload.accessKey}
@@ -193,6 +195,16 @@ export default async function DashboardPage() {
                                             ) : (
                                                 <span className="text-zinc-700 italic text-xs">Sem proteção</span>
                                             )}
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            <div className="flex items-center justify-end gap-1.5">
+                                                <UploadItemActions
+                                                    uploadId={upload.id}
+                                                    link={`${process.env.NEXTAUTH_URL}/download/${upload.slug}`}
+                                                    title={upload.title || "Pacote de Imagens"}
+                                                    slug={upload.slug}
+                                                />
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}

@@ -3,34 +3,22 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma"; // Importação necessária
 
-export async function sendWhatsappNotification(link: string, title: string) {
+export async function sendWhatsappNotification(link: string, title: string, targetPhone: string) {
   const session = await auth();
 
-  let whatsapp: string | null = null;
-  let userName: string = "Usuário";
-
-  if (session?.user?.id) {
-    // 2. BUSCA DIRETA NO BANCO (Fonte da Verdade)
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: {
-        whatsapp: true,
-        name: true
-      }
-    });
-    whatsapp = user?.whatsapp || null;
-    userName = user?.name || "Usuário";
-  } else {
-    // 3. Busca no cookie de visitante
-    const { cookies } = await import('next/headers');
-    const cookieStore = await cookies();
-    whatsapp = cookieStore.get('guest_whatsapp')?.value || null;
-    userName = "Visitante";
+  // Validar se temos um número
+  if (!targetPhone) {
+    return { error: "Número do WhatsApp não informado." };
   }
 
-  // 4. Validação do dado fesco
-  if (!whatsapp) {
-    return { error: "Número do WhatsApp não encontrado." };
+  // Tries to find the photographer's name
+  let userName: string = "Fotógrafo";
+  if (session?.user?.id) {
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { name: true }
+    });
+    userName = user?.name || "Fotógrafo";
   }
 
   const webhookUrl = process.env.N8N_WEBHOOK_URL;
@@ -42,9 +30,9 @@ export async function sendWhatsappNotification(link: string, title: string) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId: session?.user?.id || "GUEST",
+        userId: session?.user?.id || "UNKNOWN",
         name: userName,
-        phone: whatsapp,
+        phone: targetPhone,
         downloadLink: link,
         projectTitle: title,
         timestamp: new Date().toISOString()

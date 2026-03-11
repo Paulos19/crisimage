@@ -2,10 +2,8 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import { DownloadViewer } from "@/components/download-viewer";
-import { WhatsAppModal } from "@/components/whatsapp-modal";
-import { Clock, MessageCircle, AlertCircle, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { DownloadActions } from "@/components/download-actions";
+import { Clock, MessageCircle, AlertCircle, Sparkles } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -14,10 +12,6 @@ interface PageProps {
 export default async function DownloadPage({ params }: PageProps) {
   const { slug } = await params;
   const session = await auth();
-
-  const { cookies, headers } = await import('next/headers');
-  const cookieStore = await cookies();
-  const guestWhatsapp = cookieStore.get('guest_whatsapp')?.value;
 
   const uploadSession = await prisma.uploadSession.findUnique({
     where: { slug },
@@ -88,14 +82,8 @@ export default async function DownloadPage({ params }: PageProps) {
     );
   }
 
-  // Determinar se temos o WhatsApp (da sessão ou do cookie de visitante)
-  const userWhatsapp = session?.user?.id
-    ? (await prisma.user.findUnique({ where: { id: session.user.id }, select: { whatsapp: true } }))?.whatsapp
-    : guestWhatsapp;
-
-  const hasWhatsapp = !!userWhatsapp;
-
   try {
+    const { headers } = await import('next/headers');
     const headersList = await headers();
     const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || "Desconhecido";
     const userAgent = headersList.get('user-agent') || "Desconhecido";
@@ -104,8 +92,7 @@ export default async function DownloadPage({ params }: PageProps) {
       data: {
         uploadSessionId: uploadSession.id,
         ip: ip.split(',')[0].trim(),
-        userAgent: userAgent.substring(0, 190),
-        whatsapp: userWhatsapp || null,
+        userAgent: userAgent.substring(0, 190)
       }
     });
   } catch (error) {
@@ -116,8 +103,6 @@ export default async function DownloadPage({ params }: PageProps) {
 
   return (
     <>
-      <WhatsAppModal />
-
       <div className="min-h-screen bg-[#080808] selection:bg-emerald-500/30">
 
         {/* Cinematic Header */}
@@ -153,14 +138,6 @@ export default async function DownloadPage({ params }: PageProps) {
             expiresAt={uploadSession.expiresAt}
             isProtected={isProtected}
           />
-
-          <div className="mt-12 max-w-2xl mx-auto flex justify-center pb-10">
-            <DownloadActions
-              link={`${process.env.NEXTAUTH_URL}/download/${slug}`}
-              title={uploadSession.title || "Imagens"}
-              hasWhatsapp={hasWhatsapp}
-            />
-          </div>
         </div>
       </div>
     </>

@@ -5,6 +5,7 @@ import { ptBR } from "date-fns/locale";
 import { Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { CopyButton } from "./copy-button";
+import { UploadItemActions } from "./upload-item-actions";
 
 export async function RecentUploads() {
   const session = await auth();
@@ -59,15 +60,12 @@ export async function RecentUploads() {
             </div>
 
             <div className="flex items-center gap-1.5 z-10 shrink-0">
-              <CopyButton text={link} />
-
-              <Link
-                href={`/download/${upload.slug}`}
-                target="_blank"
-                className="h-8 w-8 flex items-center justify-center text-zinc-600 hover:text-emerald-400 hover:bg-emerald-500/10 rounded-full transition-all"
-              >
-                <ExternalLink className="h-4 w-4" />
-              </Link>
+              <UploadItemActions
+                uploadId={upload.id}
+                link={link}
+                title={upload.title || "Pacote de Imagens"}
+                slug={upload.slug}
+              />
             </div>
           </div>
         );
