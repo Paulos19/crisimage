@@ -9,11 +9,17 @@ import { LoginSchema } from "@/lib/schemas";
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma) as any,
   session: { strategy: "jwt" },
+  secret: process.env.AUTH_SECRET,
+  trustHost: true,
+  pages: {
+    signIn: "/login",
+    error: "/login",
+  },
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
-      allowDangerousEmailAccountLinking: true, 
+      allowDangerousEmailAccountLinking: true,
     }),
     Credentials({
       async authorize(credentials) {
@@ -47,29 +53,46 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         // @ts-ignore
         session.user.role = token.role;
       }
-      // ADICIONADO: Passa o whatsapp para a sessão se existir
       if (token.whatsapp && session.user) {
-         // @ts-ignore
-         session.user.whatsapp = token.whatsapp;
+        // @ts-ignore
+        session.user.whatsapp = token.whatsapp;
       }
       return session;
     },
     // 2. Passa os dados do Banco para o Token (JWT)
-    async jwt({ token }) {
+    async jwt({ token, user }) {
+      // Na primeira criação do token (login), o objeto `user` está presente.
+      // Salvamos os dados do user diretamente no token.
+      if (user) {
+        token.sub = user.id;
+        // @ts-ignore
+        token.role = user.role;
+        // @ts-ignore
+        token.whatsapp = user.whatsapp;
+        return token;
+      }
+
+      // Nas chamadas subsequentes, o token já tem os dados.
+      // Só buscamos no banco se precisamos (para manter atualizado), mas não invalidamos.
       if (!token.sub) return token;
 
-      const existingUser = await prisma.user.findUnique({
-        where: { id: token.sub },
-      });
+      try {
+        const existingUser = await prisma.user.findUnique({
+          where: { id: token.sub },
+        });
 
-      if (!existingUser) return token;
+        if (existingUser) {
+          // @ts-ignore
+          token.role = existingUser.role;
+          // @ts-ignore
+          token.whatsapp = existingUser.whatsapp;
+        }
+        // Se o usuário não existe mais no banco, mantemos o token como está
+        // para evitar corrupção de sessão — o middleware cuidará do redirect.
+      } catch {
+        // Em caso de erro no banco, mantém o token atual sem quebrar
+      }
 
-      // @ts-ignore
-      token.role = existingUser.role;
-      // ADICIONADO: Salva o whatsapp no token
-      // @ts-ignore
-      token.whatsapp = existingUser.whatsapp;
-      
       return token;
     },
   },
