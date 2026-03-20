@@ -7,13 +7,13 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   try {
     const session = await auth();
-    
+
     // Segurança: Apenas usuários logados podem fazer upload
     if (!session?.user) {
-        return NextResponse.json(
-            { error: 'Unauthorized' },
-            { status: 401 }
-        );
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
     }
 
     const jsonResponse = await handleUpload({
@@ -23,9 +23,14 @@ export async function POST(request: Request): Promise<NextResponse> {
         // Aqui você pode validar extensões, tamanhos, etc.
         // Como o usuário já é autenticado, permitimos.
         return {
-          allowedContentTypes: ['application/zip', 'application/x-zip-compressed'],
+          allowedContentTypes: [
+            'application/zip',
+            'application/x-zip-compressed',
+            'application/zip-compressed',
+            'application/octet-stream'
+          ],
           tokenPayload: JSON.stringify({
-            userId: session.user.id, // Metadados úteis
+            userId: session.user.id,
           }),
         };
       },
@@ -38,7 +43,10 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json(jsonResponse);
   } catch (error) {
     return NextResponse.json(
-      { error: (error as Error).message },
+      {
+        error: (error as Error).message,
+        details: 'Check Vercel Blob token and allowedContentTypes'
+      },
       { status: 400 },
     );
   }
